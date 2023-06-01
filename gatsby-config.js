@@ -51,7 +51,7 @@ module.exports = {
     title: `Embedded UI example and developer site`,
     description: `Expedite Embedded UI &amp; Contentful development and testing with this Gatsby starter`,
     author: `@jdhorn`,
-    siteUrl: `https://github.com/repohere`,
+    siteUrl: `https://github.com/asurion-private/embedded-ui`,
   },
   plugins,
 };

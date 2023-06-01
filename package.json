@@ -40,9 +40,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/__repo__"
+    "url": "https://github.com/asurion-private/embedded-ui"
   },
   "bugs": {
-    "url": "https://github.com/__repo__/issues"
+    "url": "https://github.com/asurion-private/embedded-ui/issues"
   }
 }
