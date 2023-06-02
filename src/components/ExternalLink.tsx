@@ -1,6 +1,10 @@
-import React, { HTMLProps } from 'react';
+import React, { HTMLProps, ReactNode } from 'react';
 
-type ExternalLinkProps = HTMLProps<HTMLAnchorElement>;
+interface ExternalLinkProps extends HTMLProps<HTMLAnchorElement> {
+  children: ReactNode;
+  href: string;
+  target?: string;
+}
 
 const ExternalLink = ({
   children,
