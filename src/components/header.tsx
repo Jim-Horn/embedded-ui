@@ -3,6 +3,10 @@ import { Link } from 'gatsby';
 import styled from 'styled-components';
 import ExternalLink from './ExternalLink';
 
+interface HeaderProps {
+  siteTitle: string;
+}
+
 const StyledOuterHeader = styled.div`
   border-bottom: 2px solid var(--color-primary);
 `;
@@ -20,10 +24,10 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const LogoImg = styled.img`
-  height: 1.5rem;
-  margin-bottom: 0;
-`;
+// const LogoImg = styled.img`
+//   height: 1.5rem;
+//   margin-bottom: 0;
+// `;
 
 const FlexContainer = styled.div`
   a {
@@ -34,7 +38,7 @@ const FlexContainer = styled.div`
   }
 `;
 
-const Header = ({ siteTitle }) => (
+const Header: React.FC<HeaderProps> = ({ siteTitle }) => (
   <StyledOuterHeader>
     <StyledHeader>
       <StyledLink to="/" title={siteTitle}>
