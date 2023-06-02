@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../components/layout';
+import StyledLink from '../components/StyledLink';
 import styled from 'styled-components';
 
 const StyledPre = styled.pre`
@@ -9,8 +10,9 @@ const StyledPre = styled.pre`
 
 const ContentfulData = ({ data }) => (
   <Layout>
-    <h1>{data.allContentfulPost.edges[0].node.name}</h1>
+    <StyledLink to="/display-rendered-data">Rendered data</StyledLink>
     <p>Contentful data:</p>
+    <h1>{data.allContentfulPost.edges[0].node.name}</h1>
     <StyledPre>{JSON.stringify(data, null, 2)}</StyledPre>
   </Layout>
 );

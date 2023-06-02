@@ -5,6 +5,8 @@
   "version": "0.1.0",
   "author": "Jim Horn <jim.horn@asurion.com>",
   "dependencies": {
+    "@contentful/rich-text-html-renderer": "^16.0.5",
+    "@contentful/rich-text-types": "^16.2.0",
     "@soluto-private/mx-asurion-ui-react": "^3.39.0",
     "babel-plugin-styled-components": "^2.0.7",
     "chalk": "4.1.2",
