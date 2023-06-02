@@ -1,22 +1,24 @@
 import * as React from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../components/layout';
+import styled from 'styled-components';
+
+const StyledPre = styled.pre`
+  white-space: break-spaces;
+`;
 
 const ContentfulData = ({ data }) => (
   <Layout>
     <h1>{data.allContentfulPost.edges[0].node.name}</h1>
     <p>Contentful data:</p>
-    <pre>{JSON.stringify(data, null, 2)}</pre>
+    <StyledPre>{JSON.stringify(data, null, 2)}</StyledPre>
   </Layout>
 );
-/*
-See the README for Contentful setup instructions. 
-You must also have the Post content model set up and populated.
-Run `contentful space migration content-models/post.js` from the root of this project to create it
-*/
 export const query = graphql`
   query {
-    allContentfulPost {
+    allContentfulPost(
+      filter: { id: { eq: "3607aabc-45d8-51d9-a4c4-6bd19f2bc7bf" } }
+    ) {
       edges {
         node {
           id
