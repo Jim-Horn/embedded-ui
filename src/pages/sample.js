@@ -18,6 +18,6 @@ const SamplePage = () => (
   </Layout>
 );
 
-export const Head = () => <Seo title="404: Not Found" />;
+export const Head = () => <Seo title="Sample page" />;
 
 export default SamplePage;

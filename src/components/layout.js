@@ -7,7 +7,6 @@
 
 import * as React from 'react';
 import { useStaticQuery, graphql, Link } from 'gatsby';
-import { GlobalStyles } from '@soluto-private/mx-asurion-ui-react';
 import styled from 'styled-components';
 
 import Header from './header';
@@ -40,7 +39,6 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <GlobalStyles />
       <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
       <MainDiv>
         <main>{children}</main>
