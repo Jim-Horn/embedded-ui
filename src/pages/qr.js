@@ -5,7 +5,7 @@ import Barcode from 'react-barcode';
 import Layout from '../components/layout';
 import Seo from '../components/seo';
 
-const vendorId = 'gamestop';
+const vendorId = 'workstart';
 
 const QrPage = () => {
   const [qrValue, setQrValue] = React.useState(`${vendorId}-`);
