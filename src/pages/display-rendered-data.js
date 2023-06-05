@@ -2,30 +2,8 @@ import * as React from 'react';
 import { graphql } from 'gatsby';
 import Layout from '../components/layout';
 import StyledLink from '../components/StyledLink';
-import { BLOCKS, MARKS } from '@contentful/rich-text-types';
 import { renderRichText } from 'gatsby-source-contentful/rich-text';
-import styled from 'styled-components';
-
-const StyledLi = styled.li`
-  & > p {
-    margin: 0;
-    display: inline;
-  }
-`;
-
-const Bold = ({ children }) => <strong>{children}</strong>;
-const Text = ({ children }) => <p>{children}</p>;
-
-const options = {
-  renderMark: {
-    [MARKS.BOLD]: text => <Bold>{text}</Bold>,
-    [MARKS.ITALIC]: text => <em>{text}</em>,
-  },
-  renderNode: {
-    [BLOCKS.PARAGRAPH]: (node, children) => <Text>{children}</Text>,
-    [BLOCKS.LIST_ITEM]: (node, children) => <StyledLi>{children}</StyledLi>,
-  },
-};
+import { contentfulOptions } from '../utils';
 
 const ContentfulPage = ({ data }) => {
   const node = data.allContentfulPost.edges[0].node.entry;
@@ -34,7 +12,7 @@ const ContentfulPage = ({ data }) => {
       <StyledLink to="/display-contentful-data">Contentful data</StyledLink>
       <p>Rendered data:</p>
       <h1>{data.allContentfulPost.edges[0].node.name}</h1>
-      {renderRichText(node, options)}
+      {renderRichText(node, contentfulOptions)}
     </Layout>
   );
 };
