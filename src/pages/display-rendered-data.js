@@ -19,7 +19,7 @@ const Text = ({ children }) => <p>{children}</p>;
 const options = {
   renderMark: {
     [MARKS.BOLD]: text => <Bold>{text}</Bold>,
-    [MARKS.ITALIC]: text => <strong>{text}</strong>,
+    [MARKS.ITALIC]: text => <em>{text}</em>,
   },
   renderNode: {
     [BLOCKS.PARAGRAPH]: (node, children) => <Text>{children}</Text>,
