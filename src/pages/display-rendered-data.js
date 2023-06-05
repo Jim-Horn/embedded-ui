@@ -9,6 +9,7 @@ import styled from 'styled-components';
 const StyledLi = styled.li`
   & > p {
     margin: 0;
+    display: inline;
   }
 `;
 
@@ -18,6 +19,7 @@ const Text = ({ children }) => <p>{children}</p>;
 const options = {
   renderMark: {
     [MARKS.BOLD]: text => <Bold>{text}</Bold>,
+    [MARKS.ITALIC]: text => <strong>{text}</strong>,
   },
   renderNode: {
     [BLOCKS.PARAGRAPH]: (node, children) => <Text>{children}</Text>,
