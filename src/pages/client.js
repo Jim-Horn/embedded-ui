@@ -59,7 +59,8 @@ const ClientPage = () => {
           <StyledButtonLink href="#">Add to cart</StyledButtonLink>
         </section>
         <section>
-          <StyledIframe src="/registration?prodid=xbox" />
+          {/* <StyledIframe src="/registration?prodid=xbox" /> */}
+          <registration-widget></registration-widget>
         </section>
       </StyledCols>
     </Layout>
