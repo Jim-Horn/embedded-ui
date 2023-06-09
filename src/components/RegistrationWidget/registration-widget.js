@@ -80,6 +80,7 @@ const RegistrationWidget = () => {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [zip, setZip] = useState('');
+
   const [pageState, setPageState] = useState('0');
 
   useEffect(() => {
@@ -98,6 +99,19 @@ const RegistrationWidget = () => {
     setCity('');
     setState('');
     setZip('');
+  };
+
+  const fillForm = ev => {
+    ev.preventDefault();
+    setFirstName('John');
+    setLastName('Doe');
+    setEmail('johndoe@example.com');
+    setPhone('123-456-7890');
+    setAddress1('123 Main Street');
+    setAddress2('');
+    setCity('New York');
+    setState('NY');
+    setZip('10001');
   };
 
   const stateSummary = {
@@ -159,6 +173,7 @@ const RegistrationWidget = () => {
         <Alert />
         <StyledH2>Our product</StyledH2>
         <form onSubmit={doVerification}>
+          <button onClick={fillForm}>Fill form</button>
           <StyledFormField>
             <label htmlFor="first-name">First Name</label>
             <input
