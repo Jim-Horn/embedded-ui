@@ -25,6 +25,14 @@ const StyledDiscriptionList = styled.dl`
   }
 `;
 
+const StyledEmphasis = styled.p`
+  font-style: italic;
+  color: orangered;
+  outline: 1px dotted orangered;
+  padding: 0.25rem;
+  text-align: left !important;
+`;
+
 const ClientPage = () => {
   const cartContainerRef = useRef(null);
   const cart = useRef(null);
@@ -32,8 +40,8 @@ const ClientPage = () => {
 
   useEffect(() => {
     const handleAddToCart = event => {
-      // const text = event.detail.text;
-      // cartContainerRef.current.textContent = text;
+      const jsonResponse = JSON.stringify(event.detail.payload, null, 2);
+      cartContainerRef.current.textContent = jsonResponse;
       const cartElementTerm = document.createElement('dt');
       const cartElementDefinition = document.createElement('dd');
       cartElementTerm.textContent = 'Asurion Protection Plan';
@@ -65,8 +73,10 @@ const ClientPage = () => {
           <h2 ref={cartTotal}>Total: $499.99</h2>
 
           <button type="button">Proceed to Checkout</button>
-
-          <div ref={cartContainerRef}></div>
+          <StyledEmphasis>
+            <strong>Our response (tbd):</strong>
+            <pre ref={cartContainerRef}></pre>
+          </StyledEmphasis>
         </section>
         <section>
           <registration-widget></registration-widget>
