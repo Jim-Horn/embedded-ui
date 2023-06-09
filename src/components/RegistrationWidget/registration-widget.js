@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { createRoot } from 'react-dom/client';
+import { AsurionDoodleSpinner } from '@soluto-private/mx-asurion-ui-react';
 
 const StyledFormField = styled.div`
   margin-bottom: 1rem;
@@ -25,9 +26,8 @@ const StyledSpinnerContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  flex-direction: column;
   width: 100%;
-  outline: 1px dotted grey;
 `;
 
 const StyledPageContainer = styled.div`
@@ -52,25 +52,6 @@ const StyledButtonLink = styled.a`
   border-radius: 5px;
   cursor: pointer;
 `;
-
-const Spinner = () => (
-  <svg
-    width="50"
-    height="50"
-    viewBox="0 0 100 100"
-    xmlns="http://www.w3.org/2000/svg">
-    <polygon points="50,10 10,90" stroke="#000" strokeWidth="2" fill="none">
-      <animateTransform
-        attributeName="transform"
-        type="rotate"
-        from="0 50 50"
-        to="360 50 50"
-        dur="2s"
-        repeatCount="indefinite"
-      />
-    </polygon>
-  </svg>
-);
 
 const Alert = () => (
   <StyledEmphasis>
@@ -140,10 +121,17 @@ const RegistrationWidget = () => {
     });
   };
 
+  const fakeSummary = {
+    customerIdentifier: '1234567890',
+    sku: 'client-sku',
+    price: '24.99',
+    type: 'Asurion Protection Plan',
+    dateTime: new Date(),
+  };
+
   const handleAddToCart = () => {
-    // Emit a custom event when the button is clicked
     const addToCartEvent = new CustomEvent('addToCart', {
-      detail: { text: `Congratulations, ${firstName}! Item added to cart.` },
+      detail: { payload: fakeSummary },
     });
     window.dispatchEvent(addToCartEvent);
     setPageState('4');
@@ -270,10 +258,8 @@ const RegistrationWidget = () => {
         <Alert />
         <StyledH2>Our product</StyledH2>
         <StyledSpinnerContainer>
-          <Spinner />
-          <br />
-          <br />
-          Checking eligibility...
+          <AsurionDoodleSpinner />
+          <div>Checking eligibility...</div>
         </StyledSpinnerContainer>
       </>
     ),
