@@ -12,27 +12,34 @@ const StyledCols = styled.div`
   }
 `;
 
-const StyledIframe = styled.iframe`
-  width: 100%;
-  height: 100%;
-  border: none;
-`;
-
-const StyledButtonLink = styled.a`
-  background-color: #0066cc;
-  color: white;
-  padding: 10px 20px;
-  text-decoration: none;
-  border-radius: 5px;
+const StyledDiscriptionList = styled.dl`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  dt,
+  dd {
+    margin-bottom: 0;
+  }
+  dd {
+    text-align: right;
+  }
 `;
 
 const ClientPage = () => {
   const cartContainerRef = useRef(null);
+  const cart = useRef(null);
+  const cartTotal = useRef(null);
 
   useEffect(() => {
     const handleAddToCart = event => {
-      const text = event.detail.text;
-      cartContainerRef.current.textContent = text;
+      // const text = event.detail.text;
+      // cartContainerRef.current.textContent = text;
+      const cartElementTerm = document.createElement('dt');
+      const cartElementDefinition = document.createElement('dd');
+      cartElementTerm.textContent = 'Asurion Protection Plan';
+      cartElementDefinition.textContent = '$24.99';
+      cart.current.appendChild(cartElementTerm);
+      cart.current.appendChild(cartElementDefinition);
+      cartTotal.current.textContent = 'Total: $524.98';
     };
 
     window.addEventListener('addToCart', handleAddToCart);
@@ -49,13 +56,12 @@ const ClientPage = () => {
         <section>
           <h1>Your Shopping Cart</h1>
 
-          <dl>
+          <StyledDiscriptionList ref={cart}>
             <dt>PlayStation 5</dt>
-            <dd>Price: $499</dd>
-            <dd>Quantity: 1</dd>
-          </dl>
+            <dd>$499.99</dd>
+          </StyledDiscriptionList>
 
-          <h2>Total: $499</h2>
+          <h2 ref={cartTotal}>Total: $499.99</h2>
 
           <button type="button">Proceed to Checkout</button>
 

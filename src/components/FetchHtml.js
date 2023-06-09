@@ -28,7 +28,7 @@ const FetchHtml = ({ url, el }) => {
       .catch(error => {
         console.error('Error:', error);
       });
-  }, []);
+  }, [url, el]);
 
   return <div dangerouslySetInnerHTML={{ __html: html }} />;
 };

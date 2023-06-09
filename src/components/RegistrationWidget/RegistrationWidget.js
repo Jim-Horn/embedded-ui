@@ -114,7 +114,7 @@ const RegistrationWidget = () => {
     <StyledPageContainer>
       {pageState === 0 && (
         <div id="to-be-fetched">
-          <p>Marketing banter</p>
+          <p>Marketing material</p>
           <StyledButtonLink
             href="#"
             onClick={() => {
