@@ -9,6 +9,14 @@ const StyledFormField = styled.div`
   }
 `;
 
+const StyledEmphasis = styled.p`
+  font-style: italic;
+  color: orangered;
+  outline: 1px dotted orangered;
+  padding: 0.25rem;
+  text-align: left !important;
+`;
+
 const StyledH2 = styled.h2`
   margin-top: 0;
 `;
@@ -62,6 +70,13 @@ const Spinner = () => (
       />
     </polygon>
   </svg>
+);
+
+const Alert = () => (
+  <StyledEmphasis>
+    Keep in mind that this is <strong>our</strong> embedded app. It's a web
+    component, inserted as <code>&lt;registrion-widget&gt;</code>
+  </StyledEmphasis>
 );
 
 function mockService(callback, minDelay = 1000, maxDelay = 3000) {
@@ -138,18 +153,22 @@ const RegistrationWidget = () => {
     defaultValue: <p>State not found</p>,
     0: (
       <div id="to-be-fetched">
+        <Alert />
         <p>Marketing material</p>
-        <StyledButtonLink
-          href="#"
-          onClick={() => {
-            setPageState('1');
-          }}>
-          Check elegibility
-        </StyledButtonLink>
+        <p>
+          <StyledButtonLink
+            href="#"
+            onClick={() => {
+              setPageState('1');
+            }}>
+            Check elegibility
+          </StyledButtonLink>
+        </p>
       </div>
     ),
     1: (
       <div>
+        <Alert />
         <StyledH2>Our product</StyledH2>
         <form onSubmit={doVerification}>
           <StyledFormField>
@@ -248,6 +267,7 @@ const RegistrationWidget = () => {
     ),
     2: (
       <>
+        <Alert />
         <StyledH2>Our product</StyledH2>
         <StyledSpinnerContainer>
           <Spinner />
@@ -259,6 +279,7 @@ const RegistrationWidget = () => {
     ),
     3: (
       <StyledSuccess>
+        <Alert />
         <StyledH2>Congratulations!</StyledH2>
 
         <p>Congratulations, you're eligible, {firstName}!</p>
@@ -269,6 +290,7 @@ const RegistrationWidget = () => {
     ),
     4: (
       <StyledSuccess>
+        <Alert />
         <StyledH2>Coverage added to cart</StyledH2>
       </StyledSuccess>
     ),
@@ -286,7 +308,6 @@ const RegistrationWidget = () => {
   return <StyledPageContainer>{getContent(pageState)}</StyledPageContainer>;
 };
 
-// Define the custom element for the web component
 class RegistrationWidgetElement extends HTMLElement {
   connectedCallback() {
     this.render();
