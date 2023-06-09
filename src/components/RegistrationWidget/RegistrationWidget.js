@@ -248,8 +248,3 @@ const RegistrationWidget = () => {
 };
 
 export { RegistrationWidget };
-
-const config = {
-  storeid: 'workstart', // has to be valid
-  key: '1234567890', // valid key
-};

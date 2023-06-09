@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 const StyledFormField = styled.div`
   margin-bottom: 1rem;
@@ -64,7 +64,16 @@ const Spinner = () => (
   </svg>
 );
 
-// Create the RegistrationWidget web component
+function mockService(callback, minDelay = 1000, maxDelay = 3000) {
+  const delay =
+    Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
+
+  setTimeout(() => {
+    const result = 'Mock service response';
+    callback(result);
+  }, delay);
+}
+
 const RegistrationWidget = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -75,7 +84,7 @@ const RegistrationWidget = () => {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [zip, setZip] = useState('');
-  const [pageState, setPageState] = useState(0);
+  const [pageState, setPageState] = useState('0');
 
   useEffect(() => {
     return () => {
@@ -110,10 +119,10 @@ const RegistrationWidget = () => {
   const doVerification = ev => {
     ev.preventDefault();
     console.table(stateSummary);
-    setPageState(2);
-    setTimeout(() => {
-      setPageState(3);
-    }, 3000);
+    setPageState('2');
+    mockService(() => {
+      setPageState('3');
+    });
   };
 
   const handleAddToCart = () => {
@@ -122,149 +131,159 @@ const RegistrationWidget = () => {
       detail: { text: `Congratulations, ${firstName}! Item added to cart.` },
     });
     window.dispatchEvent(addToCartEvent);
-    setPageState(4);
+    setPageState('4');
   };
 
-  return (
-    <StyledPageContainer>
-      {pageState === 0 && (
-        <div id="to-be-fetched">
-          <p>Marketing material</p>
-          <StyledButtonLink
-            href="#"
-            onClick={() => {
-              setPageState(1);
-            }}>
-            Check elegibility
-          </StyledButtonLink>
-        </div>
-      )}
-      {pageState === 1 && (
-        <div>
-          <StyledH2>Our product</StyledH2>
-          <form onSubmit={doVerification}>
-            <StyledFormField>
-              <label htmlFor="first-name">First Name</label>
-              <input
-                id="first-name"
-                type="text"
-                value={firstName}
-                required
-                onChange={e => setFirstName(e.target.value)}
-              />
-            </StyledFormField>
-            <StyledFormField>
-              <label htmlFor="last-name">Last Name</label>
-              <input
-                id="last-name"
-                type="text"
-                value={lastName}
-                required
-                onChange={e => setLastName(e.target.value)}
-              />
-            </StyledFormField>
-            <StyledFormField>
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="text"
-                value={email}
-                required
-                onChange={e => setEmail(e.target.value)}
-              />
-            </StyledFormField>
-            <StyledFormField>
-              <label htmlFor="phone">Phone Number</label>
-              <input
-                id="phone"
-                type="text"
-                value={phone}
-                required
-                onChange={e => setPhone(e.target.value)}
-              />
-            </StyledFormField>
-            <StyledFormField>
-              <label htmlFor="address1">Address 1</label>
-              <input
-                id="address1"
-                type="text"
-                value={address1}
-                required
-                onChange={e => setAddress1(e.target.value)}
-              />
-            </StyledFormField>
-            <StyledFormField>
-              <label htmlFor="address2">Address 2</label>
-              <input
-                id="address2"
-                type="text"
-                value={address2}
-                onChange={e => setAddress2(e.target.value)}
-              />
-            </StyledFormField>
-            <StyledFormField>
-              <label htmlFor="city">City</label>
-              <input
-                id="city"
-                type="text"
-                value={city}
-                required
-                onChange={e => setCity(e.target.value)}
-              />
-            </StyledFormField>
-            <StyledFormField>
-              <label htmlFor="state">State</label>
-              <input
-                id="state"
-                type="text"
-                value={state}
-                required
-                onChange={e => setState(e.target.value)}
-              />
-            </StyledFormField>
-            <StyledFormField>
-              <label htmlFor="zip">Zip</label>
-              <input
-                id="zip"
-                type="text"
-                value={zip}
-                required
-                onChange={e => setZip(e.target.value)}
-              />
-            </StyledFormField>
-            <input type="submit" value="Submit" />
-            <input type="reset" value="Reset" onClick={resetForm} />
-          </form>
-        </div>
-      )}
-      {pageState === 2 && (
-        <>
-          <StyledH2>Our product</StyledH2>
-          <StyledSpinnerContainer>
-            <Spinner />
-            <br />
-            <br />
-            Checking eligibility...
-          </StyledSpinnerContainer>
-        </>
-      )}
-      {pageState === 3 && (
-        <StyledSuccess>
-          <StyledH2>Congratulations!</StyledH2>
+  const content = {
+    defaultValue: <p>State not found</p>,
+    0: (
+      <div id="to-be-fetched">
+        <p>Marketing material</p>
+        <StyledButtonLink
+          href="#"
+          onClick={() => {
+            setPageState('1');
+          }}>
+          Check elegibility
+        </StyledButtonLink>
+      </div>
+    ),
+    1: (
+      <div>
+        <StyledH2>Our product</StyledH2>
+        <form onSubmit={doVerification}>
+          <StyledFormField>
+            <label htmlFor="first-name">First Name</label>
+            <input
+              id="first-name"
+              type="text"
+              value={firstName}
+              required
+              onChange={e => setFirstName(e.target.value)}
+            />
+          </StyledFormField>
+          <StyledFormField>
+            <label htmlFor="last-name">Last Name</label>
+            <input
+              id="last-name"
+              type="text"
+              value={lastName}
+              required
+              onChange={e => setLastName(e.target.value)}
+            />
+          </StyledFormField>
+          <StyledFormField>
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="text"
+              value={email}
+              required
+              onChange={e => setEmail(e.target.value)}
+            />
+          </StyledFormField>
+          <StyledFormField>
+            <label htmlFor="phone">Phone Number</label>
+            <input
+              id="phone"
+              type="text"
+              value={phone}
+              required
+              onChange={e => setPhone(e.target.value)}
+            />
+          </StyledFormField>
+          <StyledFormField>
+            <label htmlFor="address1">Address 1</label>
+            <input
+              id="address1"
+              type="text"
+              value={address1}
+              required
+              onChange={e => setAddress1(e.target.value)}
+            />
+          </StyledFormField>
+          <StyledFormField>
+            <label htmlFor="address2">Address 2</label>
+            <input
+              id="address2"
+              type="text"
+              value={address2}
+              onChange={e => setAddress2(e.target.value)}
+            />
+          </StyledFormField>
+          <StyledFormField>
+            <label htmlFor="city">City</label>
+            <input
+              id="city"
+              type="text"
+              value={city}
+              required
+              onChange={e => setCity(e.target.value)}
+            />
+          </StyledFormField>
+          <StyledFormField>
+            <label htmlFor="state">State</label>
+            <input
+              id="state"
+              type="text"
+              value={state}
+              required
+              onChange={e => setState(e.target.value)}
+            />
+          </StyledFormField>
+          <StyledFormField>
+            <label htmlFor="zip">Zip</label>
+            <input
+              id="zip"
+              type="text"
+              value={zip}
+              required
+              onChange={e => setZip(e.target.value)}
+            />
+          </StyledFormField>
+          <input type="submit" value="Submit" />
+          <input type="reset" value="Reset" onClick={resetForm} />
+        </form>
+      </div>
+    ),
+    2: (
+      <>
+        <StyledH2>Our product</StyledH2>
+        <StyledSpinnerContainer>
+          <Spinner />
+          <br />
+          <br />
+          Checking eligibility...
+        </StyledSpinnerContainer>
+      </>
+    ),
+    3: (
+      <StyledSuccess>
+        <StyledH2>Congratulations!</StyledH2>
 
-          <p>Congratulations, you're eligible, {firstName}!</p>
-          <StyledButtonLink onClick={handleAddToCart}>
-            Add to Cart
-          </StyledButtonLink>
-        </StyledSuccess>
-      )}
-      {pageState === 4 && (
-        <StyledSuccess>
-          <StyledH2>Coverage added to cart</StyledH2>
-        </StyledSuccess>
-      )}
-    </StyledPageContainer>
-  );
+        <p>Congratulations, you're eligible, {firstName}!</p>
+        <StyledButtonLink onClick={handleAddToCart}>
+          Add to Cart
+        </StyledButtonLink>
+      </StyledSuccess>
+    ),
+    4: (
+      <StyledSuccess>
+        <StyledH2>Coverage added to cart</StyledH2>
+      </StyledSuccess>
+    ),
+  };
+
+  function createMap({ defaultValue = '', ...data } = {}) {
+    const map = new Map(Object.entries(data));
+    return function (key = '') {
+      return map.get(key) ?? defaultValue;
+    };
+  }
+
+  const getContent = createMap(content);
+
+  return <StyledPageContainer>{getContent(pageState)}</StyledPageContainer>;
 };
 
 // Define the custom element for the web component
@@ -274,7 +293,7 @@ class RegistrationWidgetElement extends HTMLElement {
   }
 
   render() {
-    ReactDOM.render(<RegistrationWidget />, this);
+    createRoot(this).render(<RegistrationWidget />);
   }
 }
 

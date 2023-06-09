@@ -8,7 +8,8 @@ const StyledCols = styled.div`
   grid-template-columns: 2fr 1fr;
   grid-gap: 1rem;
   & > section {
-    /* outline: 1px dotted grey; */
+    outline: 1px dotted #ccc;
+    padding: 0.25rem;
   }
 `;
 
