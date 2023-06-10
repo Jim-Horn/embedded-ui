@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { createRoot } from 'react-dom/client';
-import { AsurionDoodleSpinner } from '@soluto-private/mx-asurion-ui-react';
+import {
+  AsurionDoodleSpinner,
+  Button,
+  ButtonGroup,
+  TextField,
+} from '@soluto-private/mx-asurion-ui-react';
 
 const StyledFormField = styled.div`
   margin-bottom: 1rem;
-  label {
-    display: block;
-  }
 `;
 
 const StyledEmphasis = styled.p`
@@ -16,6 +18,7 @@ const StyledEmphasis = styled.p`
   outline: 1px dotted orangered;
   padding: 0.25rem;
   text-align: left !important;
+  opacity: 0.6;
 `;
 
 const StyledH2 = styled.h2`
@@ -42,15 +45,6 @@ const StyledSuccess = styled.div`
   & > p {
     text-align: center;
   }
-`;
-
-const StyledButtonLink = styled.a`
-  background-color: #0066cc;
-  color: white;
-  padding: 10px 20px;
-  text-decoration: none;
-  border-radius: 5px;
-  cursor: pointer;
 `;
 
 const Alert = () => (
@@ -83,11 +77,12 @@ const RegistrationWidget = () => {
 
   const [pageState, setPageState] = useState('0');
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       resetForm();
-    };
-  }, []);
+    },
+    []
+  );
 
   const resetForm = () => {
     setFirstName('');
@@ -101,17 +96,59 @@ const RegistrationWidget = () => {
     setZip('');
   };
 
+  const getRandomValue = options => {
+    const randomIndex = Math.floor(Math.random() * options.length);
+    return options[randomIndex];
+  };
+
   const fillForm = ev => {
     ev.preventDefault();
-    setFirstName('John');
-    setLastName('Doe');
-    setEmail('johndoe@example.com');
-    setPhone('123-456-7890');
-    setAddress1('123 Main Street');
+
+    const firstNameOptions = ['John', 'David', 'Michael', 'Sarah', 'Emily'];
+    const lastNameOptions = ['Doe', 'Smith', 'Johnson', 'Brown', 'Lee'];
+    const emailOptions = [
+      'johndoe@example.com',
+      'smith@example.com',
+      'johnson@example.com',
+      'brown@example.com',
+      'lee@example.com',
+    ];
+    const phoneOptions = [
+      '123-456-7890',
+      '987-654-3210',
+      '555-123-4567',
+      '888-777-9999',
+      '333-222-1111',
+    ];
+    const address1Options = [
+      '123 Main Street',
+      '456 Elm Street',
+      '789 Oak Street',
+      '321 Pine Street',
+      '555 Maple Street',
+    ];
+    const cityStateMap = {
+      'New York': 'NY',
+      'Los Angeles': 'CA',
+      Chicago: 'IL',
+      Houston: 'TX',
+      Miami: 'FL',
+    };
+
+    const cityOptions = Object.keys(cityStateMap);
+    const zipOptions = ['10001', '90001', '60601', '77001', '33101'];
+
+    setFirstName(getRandomValue(firstNameOptions));
+    setLastName(getRandomValue(lastNameOptions));
+    setEmail(getRandomValue(emailOptions));
+    setPhone(getRandomValue(phoneOptions));
+    setAddress1(getRandomValue(address1Options));
+
     setAddress2('');
-    setCity('New York');
-    setState('NY');
-    setZip('10001');
+    const randomCity = getRandomValue(cityOptions);
+    setCity(randomCity);
+    setState(cityStateMap[randomCity]);
+    setZip(getRandomValue(zipOptions));
   };
 
   const stateSummary = {
@@ -154,119 +191,135 @@ const RegistrationWidget = () => {
   const content = {
     defaultValue: <p>State not found</p>,
     0: (
-      <div id="to-be-fetched">
+      <>
         <Alert />
         <p>Marketing material</p>
         <p>
-          <StyledButtonLink
+          <Button
+            size="small"
             href="#"
             onClick={() => {
               setPageState('1');
             }}>
             Check elegibility
-          </StyledButtonLink>
+          </Button>
         </p>
-      </div>
+      </>
     ),
     1: (
-      <div>
+      <>
         <Alert />
         <StyledH2>Our product</StyledH2>
+        <p>
+          <Button size="small" onClick={fillForm}>
+            Fill form
+          </Button>
+        </p>
         <form onSubmit={doVerification}>
-          <button onClick={fillForm}>Fill form</button>
           <StyledFormField>
-            <label htmlFor="first-name">First Name</label>
-            <input
+            <TextField
               id="first-name"
               type="text"
+              label="First Name"
               value={firstName}
               required
               onChange={e => setFirstName(e.target.value)}
             />
           </StyledFormField>
           <StyledFormField>
-            <label htmlFor="last-name">Last Name</label>
-            <input
+            <TextField
               id="last-name"
               type="text"
+              label="Last Name"
               value={lastName}
               required
               onChange={e => setLastName(e.target.value)}
             />
           </StyledFormField>
           <StyledFormField>
-            <label htmlFor="email">Email</label>
-            <input
+            <TextField
               id="email"
               type="text"
+              label="Email"
               value={email}
               required
               onChange={e => setEmail(e.target.value)}
             />
           </StyledFormField>
           <StyledFormField>
-            <label htmlFor="phone">Phone Number</label>
-            <input
+            <TextField
               id="phone"
               type="text"
+              label="Phone Number"
               value={phone}
               required
               onChange={e => setPhone(e.target.value)}
             />
           </StyledFormField>
           <StyledFormField>
-            <label htmlFor="address1">Address 1</label>
-            <input
+            <TextField
               id="address1"
               type="text"
+              label="Address 1"
               value={address1}
               required
               onChange={e => setAddress1(e.target.value)}
             />
           </StyledFormField>
           <StyledFormField>
-            <label htmlFor="address2">Address 2</label>
-            <input
+            <TextField
               id="address2"
               type="text"
+              label="Address 2"
               value={address2}
               onChange={e => setAddress2(e.target.value)}
             />
           </StyledFormField>
           <StyledFormField>
-            <label htmlFor="city">City</label>
-            <input
+            <TextField
               id="city"
               type="text"
+              label="City"
               value={city}
               required
               onChange={e => setCity(e.target.value)}
             />
           </StyledFormField>
           <StyledFormField>
-            <label htmlFor="state">State</label>
-            <input
+            <TextField
               id="state"
               type="text"
+              label="State"
               value={state}
               required
               onChange={e => setState(e.target.value)}
             />
           </StyledFormField>
           <StyledFormField>
-            <label htmlFor="zip">Zip</label>
-            <input
+            <TextField
               id="zip"
               type="text"
+              label="Zip"
               value={zip}
               required
               onChange={e => setZip(e.target.value)}
             />
           </StyledFormField>
-          <input type="submit" value="Submit" />
-          <input type="reset" value="Reset" onClick={resetForm} />
+          <ButtonGroup>
+            <Button
+              size="small"
+              type="submit"
+              onClick={() => {
+                window.scrollTo(0, 0);
+              }}>
+              Submit
+            </Button>
+            <Button size="small" onClick={resetForm}>
+              Reset
+            </Button>
+          </ButtonGroup>
         </form>
-      </div>
+      </>
     ),
     2: (
       <>
@@ -283,10 +336,10 @@ const RegistrationWidget = () => {
         <Alert />
         <StyledH2>Congratulations!</StyledH2>
 
-        <p>Congratulations, you're eligible, {firstName}!</p>
-        <StyledButtonLink onClick={handleAddToCart}>
+        <p>Congratulations, {firstName}, you're eligible!</p>
+        <Button size="small" onClick={handleAddToCart}>
           Add to Cart
-        </StyledButtonLink>
+        </Button>
       </StyledSuccess>
     ),
     4: (

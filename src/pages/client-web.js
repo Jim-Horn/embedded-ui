@@ -31,6 +31,7 @@ const StyledEmphasis = styled.p`
   outline: 1px dotted orangered;
   padding: 0.25rem;
   text-align: left !important;
+  opacity: 0.6;
 `;
 
 const ClientPage = () => {
