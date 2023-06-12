@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import Layout from '../components/layout';
-import Seo from '../components/seo';
+import Layout from '../../components/layout';
+import Seo from '../../components/seo';
 import { styled } from 'styled-components';
-import FetchHtml from '../components/FetchHtml';
+import FetchHtml from '../../components/FetchHtml';
 
 const StyledCols = styled.div`
   display: grid;
