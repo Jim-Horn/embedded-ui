@@ -9,13 +9,18 @@ const SiteMap = ({ data }) => {
     <Layout>
       <h1>Client experiences</h1>
       <ul>
-        {edges.map(node => (
-          <li>
-            <Link to={node.node.path}>
-              {node.node.path.replace('/experiences/', '').replace(/\/$/, '')}
-            </Link>
-          </li>
-        ))}
+        {edges.map(node => {
+          const name = node.node.path
+            .replace('/experiences/', '')
+            .replace(/\/$/, '');
+          return (
+            name !== '' && (
+              <li>
+                <Link to={node.node.path}>{name}</Link>
+              </li>
+            )
+          );
+        })}
       </ul>
     </Layout>
   );
