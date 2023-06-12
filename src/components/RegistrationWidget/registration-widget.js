@@ -7,6 +7,7 @@ import {
   ButtonGroup,
   TextField,
 } from '@soluto-private/mx-asurion-ui-react';
+import { Modal } from '@soluto-private/aui-react-modal';
 
 const StyledFormField = styled.div`
   margin-bottom: 1rem;
@@ -64,7 +65,8 @@ function mockService(callback, minDelay = 1000, maxDelay = 3000) {
   }, delay);
 }
 
-const RegistrationWidget = () => {
+const RegistrationWidget = ({ mode = 'inline' }) => {
+  console.log(`mode: ${mode}`);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -76,6 +78,8 @@ const RegistrationWidget = () => {
   const [zip, setZip] = useState('');
 
   const [pageState, setPageState] = useState('0');
+
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   useEffect(
     () => () => {
@@ -194,6 +198,7 @@ const RegistrationWidget = () => {
       <>
         <Alert />
         <p>Marketing material</p>
+
         <p>
           <Button
             size="small"
@@ -359,16 +364,28 @@ const RegistrationWidget = () => {
 
   const getContent = createMap(content);
 
-  return <StyledPageContainer>{getContent(pageState)}</StyledPageContainer>;
+  return mode !== 'modal' ? (
+    <StyledPageContainer>{getContent(pageState)}</StyledPageContainer>
+  ) : (
+    <Modal isOpen={isModalOpen} onCloseModal={() => setIsModalOpen(false)}>
+      <Modal.Header>
+        <Modal.Title>Our Service</Modal.Title>
+        <Modal.Subtitle>Subtitle goes here</Modal.Subtitle>
+      </Modal.Header>
+      <Modal.Content>{getContent(pageState)}</Modal.Content>
+    </Modal>
+  );
 };
 
 class RegistrationWidgetElement extends HTMLElement {
   connectedCallback() {
+    this._mode = this.getAttribute('mode') || 'inline';
     this.render();
   }
 
   render() {
-    createRoot(this).render(<RegistrationWidget />);
+    const mode = this._mode;
+    createRoot(this).render(<RegistrationWidget mode={mode} />);
   }
 }
 
