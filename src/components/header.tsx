@@ -44,6 +44,7 @@ const Header: React.FC<HeaderProps> = ({ siteTitle }) => (
       <StyledLink to="/" title={siteTitle}>
         LOGO HERE
       </StyledLink>
+      <Link to="/experiences">Embedded Experiences</Link>
       <FlexContainer>
         <ExternalLink
           href="https://www.gatsbyjs.com"
