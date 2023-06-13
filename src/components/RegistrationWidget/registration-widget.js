@@ -88,14 +88,14 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
   );
 
   useEffect(() => {
-    function handleWindowClick(ev) {
+    function handleShowModalClick(ev) {
       setIsModalOpen(true);
     }
 
-    window.addEventListener('show-modal', handleWindowClick);
+    window.addEventListener('show-modal', handleShowModalClick);
 
     return function cleanup() {
-      window.removeEventListener('click', handleWindowClick);
+      window.removeEventListener('click', handleShowModalClick);
     };
   }, []);
 
