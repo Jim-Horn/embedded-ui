@@ -65,8 +65,7 @@ function mockService(callback, minDelay = 1000, maxDelay = 3000) {
   }, delay);
 }
 
-const RegistrationWidget = ({ mode = 'inline' }) => {
-  console.log(`mode: ${mode}`);
+const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -79,7 +78,7 @@ const RegistrationWidget = ({ mode = 'inline' }) => {
 
   const [pageState, setPageState] = useState('0');
 
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(showModal);
 
   useEffect(
     () => () => {
@@ -87,6 +86,18 @@ const RegistrationWidget = ({ mode = 'inline' }) => {
     },
     []
   );
+
+  useEffect(() => {
+    function handleWindowClick(ev) {
+      setIsModalOpen(true);
+    }
+
+    window.addEventListener('show-modal', handleWindowClick);
+
+    return function cleanup() {
+      window.removeEventListener('click', handleWindowClick);
+    };
+  }, []);
 
   const resetForm = () => {
     setFirstName('');
@@ -190,6 +201,10 @@ const RegistrationWidget = ({ mode = 'inline' }) => {
     });
     window.dispatchEvent(addToCartEvent);
     setPageState('4');
+    mode === 'modal' &&
+      setTimeout(() => {
+        setIsModalOpen(false);
+      }, 1500);
   };
 
   const content = {
@@ -364,28 +379,41 @@ const RegistrationWidget = ({ mode = 'inline' }) => {
 
   const getContent = createMap(content);
 
-  return mode !== 'modal' ? (
-    <StyledPageContainer>{getContent(pageState)}</StyledPageContainer>
-  ) : (
+  const PartialModal = ({ children }) => (
     <Modal isOpen={isModalOpen} onCloseModal={() => setIsModalOpen(false)}>
       <Modal.Header>
         <Modal.Title>Our Service</Modal.Title>
         <Modal.Subtitle>Subtitle goes here</Modal.Subtitle>
       </Modal.Header>
-      <Modal.Content>{getContent(pageState)}</Modal.Content>
+      <Modal.Content>{children}</Modal.Content>
     </Modal>
   );
+
+  const Container = mode === 'modal' ? PartialModal : StyledPageContainer;
+
+  return <Container>{getContent(pageState)}</Container>;
 };
 
 class RegistrationWidgetElement extends HTMLElement {
   connectedCallback() {
     this._mode = this.getAttribute('mode') || 'inline';
+    this._showModal = false;
     this.render();
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === 'showModal') {
+      this._showModal = newValue;
+      this.render();
+    }
   }
 
   render() {
     const mode = this._mode;
-    createRoot(this).render(<RegistrationWidget mode={mode} />);
+    const showModal = this._showModal;
+    createRoot(this).render(
+      <RegistrationWidget mode={mode} showModal={showModal} />
+    );
   }
 }
 
