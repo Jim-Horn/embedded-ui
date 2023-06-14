@@ -28,6 +28,7 @@ const ClientPage = () => {
   const cartContainerRef = useRef(null);
   const cart = useRef(null);
   const cartTotal = useRef(null);
+  const checkElegibility = useRef(null);
 
   useEffect(() => {
     const handleAddToCart = event => {
@@ -40,6 +41,7 @@ const ClientPage = () => {
       cart.current.appendChild(cartElementTerm);
       cart.current.appendChild(cartElementDefinition);
       cartTotal.current.textContent = 'Total: $524.98';
+      checkElegibility.current.parentNode.removeChild(checkElegibility.current);
     };
 
     window.addEventListener('addToCart', handleAddToCart);
@@ -55,7 +57,7 @@ const ClientPage = () => {
 
       <h1>Your Shopping Cart</h1>
 
-      <p>
+      <p ref={checkElegibility}>
         You may be elegible for coverage.{' '}
         <button
           onClick={ev => {
