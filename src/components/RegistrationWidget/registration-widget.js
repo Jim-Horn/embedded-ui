@@ -80,13 +80,6 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(showModal);
 
-  useEffect(
-    () => () => {
-      resetForm();
-    },
-    []
-  );
-
   useEffect(() => {
     function handleShowModalClick(ev) {
       setIsModalOpen(true);
