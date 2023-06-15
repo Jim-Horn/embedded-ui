@@ -42,6 +42,11 @@ const ClientPage = () => {
       cart.current.appendChild(cartElementDefinition);
       cartTotal.current.textContent = 'Total: $524.98';
       checkElegibility.current.parentNode.removeChild(checkElegibility.current);
+      dispatchEvent(
+        new CustomEvent('show-modal', {
+          detail: { show: false },
+        })
+      );
     };
 
     window.addEventListener('addToCart', handleAddToCart);
@@ -63,7 +68,7 @@ const ClientPage = () => {
           onClick={ev => {
             dispatchEvent(
               new CustomEvent('show-modal', {
-                detail: 'Check button was clicked',
+                detail: { show: true },
               })
             );
           }}>
