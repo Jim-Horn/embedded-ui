@@ -13,7 +13,12 @@ import {
   StyledSpinnerContainer,
   StyledSuccess,
 } from './elements';
-import { getRandomFormValue, mockService, renderFormField } from './utils';
+import {
+  getRandomFormValue,
+  mockService,
+  renderFormField,
+  useFormState,
+} from './utils';
 import { formOptions, summary } from './fakeData';
 
 const Alert = () => (
@@ -24,18 +29,8 @@ const Alert = () => (
 );
 
 const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address1, setAddress1] = useState('');
-  const [address2, setAddress2] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [zip, setZip] = useState('');
-
+  const { formState } = useFormState();
   const [pageState, setPageState] = useState('0');
-
   const [isModalOpen, setIsModalOpen] = useState(showModal);
 
   useEffect(() => {
@@ -51,15 +46,15 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
   }, []);
 
   const resetForm = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPhone('');
-    setAddress1('');
-    setAddress2('');
-    setCity('');
-    setState('');
-    setZip('');
+    formState.setFirstName('');
+    formState.setLastName('');
+    formState.setEmail('');
+    formState.setPhone('');
+    formState.setAddress1('');
+    formState.setAddress2('');
+    formState.setCity('');
+    formState.setState('');
+    formState.setZip('');
   };
 
   const fillForm = ev => {
@@ -67,29 +62,29 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
 
     const cityOptions = Object.keys(formOptions.cityStateMap);
 
-    setFirstName(getRandomFormValue(formOptions.firstName));
-    setLastName(getRandomFormValue(formOptions.lastName));
-    setEmail(getRandomFormValue(formOptions.email));
-    setPhone(getRandomFormValue(formOptions.phone));
-    setAddress1(getRandomFormValue(formOptions.address1));
-    setAddress2('');
+    formState.setFirstName(getRandomFormValue(formOptions.firstName));
+    formState.setLastName(getRandomFormValue(formOptions.lastName));
+    formState.setEmail(getRandomFormValue(formOptions.email));
+    formState.setPhone(getRandomFormValue(formOptions.phone));
+    formState.setAddress1(getRandomFormValue(formOptions.address1));
+    formState.setAddress2('');
 
     const randomCity = getRandomFormValue(cityOptions);
-    setCity(randomCity);
-    setState(formOptions.cityStateMap[randomCity]);
-    setZip(getRandomFormValue(formOptions.zip));
+    formState.setCity(randomCity);
+    formState.setState(formOptions.cityStateMap[randomCity]);
+    formState.setZip(getRandomFormValue(formOptions.zip));
   };
 
   const stateSummary = {
-    firstName,
-    lastName,
-    email,
-    phone,
-    address1,
-    address2,
-    city,
-    state,
-    zip,
+    firstName: formState.firstName,
+    lastName: formState.lastName,
+    email: formState.email,
+    phone: formState.phone,
+    address1: formState.address1,
+    address2: formState.address2,
+    city: formState.city,
+    state: formState.state,
+    zip: formState.zip,
   };
 
   const doVerification = ev => {
@@ -114,15 +109,21 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
   };
 
   const formFields = [
-    ['first-name', 'First Name', firstName, setFirstName, true],
-    ['last-name', 'Last Name', lastName, setLastName, true],
-    ['email', 'Email', email, setEmail, true],
-    ['phone', 'Phone Number', phone, setPhone, true],
-    ['address1', 'Address 1', address1, setAddress1, true],
-    ['address2', 'Address 2', address2, setAddress2, false],
-    ['city', 'City', city, setCity, true],
-    ['state', 'State', state, setState, true],
-    ['zip', 'Zip', zip, setZip, true],
+    [
+      'first-name',
+      'First Name',
+      formState.firstName,
+      formState.setFirstName,
+      true,
+    ],
+    ['last-name', 'Last Name', formState.lastName, formState.setLastName, true],
+    ['email', 'Email', formState.email, formState.setEmail, true],
+    ['phone', 'Phone Number', formState.phone, formState.setPhone, true],
+    ['address1', 'Address 1', formState.address1, formState.setAddress1, true],
+    ['address2', 'Address 2', formState.address2, formState.setAddress2, false],
+    ['city', 'City', formState.city, formState.setCity, true],
+    ['state', 'State', formState.state, formState.setState, true],
+    ['zip', 'Zip', formState.zip, formState.setZip, true],
   ];
 
   const content = {
@@ -186,7 +187,7 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
         <Alert />
         <StyledH2>Congratulations!</StyledH2>
 
-        <p>Congratulations, {firstName}, you're eligible!</p>
+        <p>Congratulations, {formState.firstName}, you're eligible!</p>
         <Button size="small" onClick={handleAddToCart}>
           Add to Cart
         </Button>

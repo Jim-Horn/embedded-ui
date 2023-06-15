@@ -18,6 +18,7 @@ const StyledSpinnerContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   height: 100%;
   width: 100%;
   outline: 1px dotted grey;

@@ -3,7 +3,6 @@ import * as React from 'react';
 import Layout from '../../components/layout';
 import Seo from '../../components/seo';
 import { styled } from 'styled-components';
-import FetchHtml from '../../components/FetchHtml';
 
 const StyledCols = styled.div`
   display: grid;
@@ -32,7 +31,6 @@ const ClientPage = () => {
   return (
     <Layout>
       <h1>Client page</h1>
-      <FetchHtml url="https://jdhorn.com/" el="#to-be-fetched" />
       <StyledCols>
         <section>
           <h1>Enter the World of Unmatched Gaming with Xbox!</h1>
