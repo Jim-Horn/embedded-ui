@@ -31,3 +31,11 @@ export const formOptions = {
     Miami: 'FL',
   },
 };
+
+export const summary = {
+  customerIdentifier: '1234567890',
+  sku: 'client-sku',
+  price: '24.99',
+  type: 'Asurion Protection Plan',
+  dateTime: new Date(),
+};

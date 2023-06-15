@@ -15,8 +15,8 @@ import {
   StyledSpinnerContainer,
   StyledSuccess,
 } from './elements';
-import { getRandomFormValue, mockService } from './utils';
-import { formOptions } from './formData';
+import { getRandomFormValue, mockService, renderFormField } from './utils';
+import { formOptions, summary } from './fakeData';
 
 const Alert = () => (
   <StyledEmphasis>
@@ -103,17 +103,9 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
     });
   };
 
-  const fakeSummary = {
-    customerIdentifier: '1234567890',
-    sku: 'client-sku',
-    price: '24.99',
-    type: 'Asurion Protection Plan',
-    dateTime: new Date(),
-  };
-
   const handleAddToCart = () => {
     const addToCartEvent = new CustomEvent('addToCart', {
-      detail: { payload: fakeSummary },
+      detail: { payload: summary },
     });
     window.dispatchEvent(addToCartEvent);
     setPageState('4');
@@ -122,6 +114,18 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
         setIsModalOpen(false);
       }, 1500);
   };
+
+  const formFields = [
+    ['first-name', 'First Name', firstName, setFirstName, true],
+    ['last-name', 'Last Name', lastName, setLastName, true],
+    ['email', 'Email', email, setEmail, true],
+    ['phone', 'Phone Number', phone, setPhone, true],
+    ['address1', 'Address 1', address1, setAddress1, true],
+    ['address2', 'Address 2', address2, setAddress2, false],
+    ['city', 'City', city, setCity, true],
+    ['state', 'State', state, setState, true],
+    ['zip', 'Zip', zip, setZip, true],
+  ];
 
   const content = {
     defaultValue: <p>State not found</p>,
@@ -152,95 +156,7 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
           </Button>
         </p>
         <form onSubmit={doVerification}>
-          <StyledFormField>
-            <TextField
-              id="first-name"
-              type="text"
-              label="First Name"
-              value={firstName}
-              required
-              onChange={e => setFirstName(e.target.value)}
-            />
-          </StyledFormField>
-          <StyledFormField>
-            <TextField
-              id="last-name"
-              type="text"
-              label="Last Name"
-              value={lastName}
-              required
-              onChange={e => setLastName(e.target.value)}
-            />
-          </StyledFormField>
-          <StyledFormField>
-            <TextField
-              id="email"
-              type="text"
-              label="Email"
-              value={email}
-              required
-              onChange={e => setEmail(e.target.value)}
-            />
-          </StyledFormField>
-          <StyledFormField>
-            <TextField
-              id="phone"
-              type="text"
-              label="Phone Number"
-              value={phone}
-              required
-              onChange={e => setPhone(e.target.value)}
-            />
-          </StyledFormField>
-          <StyledFormField>
-            <TextField
-              id="address1"
-              type="text"
-              label="Address 1"
-              value={address1}
-              required
-              onChange={e => setAddress1(e.target.value)}
-            />
-          </StyledFormField>
-          <StyledFormField>
-            <TextField
-              id="address2"
-              type="text"
-              label="Address 2"
-              value={address2}
-              onChange={e => setAddress2(e.target.value)}
-            />
-          </StyledFormField>
-          <StyledFormField>
-            <TextField
-              id="city"
-              type="text"
-              label="City"
-              value={city}
-              required
-              onChange={e => setCity(e.target.value)}
-            />
-          </StyledFormField>
-          <StyledFormField>
-            <TextField
-              id="state"
-              type="text"
-              label="State"
-              value={state}
-              required
-              onChange={e => setState(e.target.value)}
-            />
-          </StyledFormField>
-          <StyledFormField>
-            <TextField
-              id="zip"
-              type="text"
-              label="Zip"
-              value={zip}
-              required
-              onChange={e => setZip(e.target.value)}
-            />
-          </StyledFormField>
+          {formFields.map((field, index) => renderFormField(...field))}
           <ButtonGroup>
             <Button
               size="small"
