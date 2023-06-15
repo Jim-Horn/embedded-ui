@@ -6,6 +6,6 @@ import { RegistrationWidget } from '../components/RegistrationWidget';
 
 const RegistrationPage = () => <RegistrationWidget />;
 
-export const Head = () => <Seo title="Sample page" />;
+export const Head = () => <Seo title="Registration page" />;
 
 export default RegistrationPage;
