@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
+import { Modal } from '@soluto-private/aui-react-modal';
 import {
   AsurionDoodleSpinner,
   Button,
   ButtonGroup,
   TextField,
 } from '@soluto-private/mx-asurion-ui-react';
-import { Modal } from '@soluto-private/aui-react-modal';
+import React, { useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import {
   StyledEmphasis,
-  StyledH2,
   StyledFormField,
+  StyledH2,
+  StyledPageContainer,
   StyledSpinnerContainer,
   StyledSuccess,
-  StyledPageContainer,
 } from './elements';
-import { mockService } from './utils/mockService';
+import { getRandomFormValue, mockService } from './utils';
+import { formOptions } from './formData';
 
 const Alert = () => (
   <StyledEmphasis>
@@ -63,59 +64,22 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
     setZip('');
   };
 
-  const getRandomValue = options => {
-    const randomIndex = Math.floor(Math.random() * options.length);
-    return options[randomIndex];
-  };
-
   const fillForm = ev => {
     ev.preventDefault();
 
-    const firstNameOptions = ['John', 'David', 'Michael', 'Sarah', 'Emily'];
-    const lastNameOptions = ['Doe', 'Smith', 'Johnson', 'Brown', 'Lee'];
-    const emailOptions = [
-      'johndoe@example.com',
-      'smith@example.com',
-      'johnson@example.com',
-      'brown@example.com',
-      'lee@example.com',
-    ];
-    const phoneOptions = [
-      '123-456-7890',
-      '987-654-3210',
-      '555-123-4567',
-      '888-777-9999',
-      '333-222-1111',
-    ];
-    const address1Options = [
-      '123 Main Street',
-      '456 Elm Street',
-      '789 Oak Street',
-      '321 Pine Street',
-      '555 Maple Street',
-    ];
-    const cityStateMap = {
-      'New York': 'NY',
-      'Los Angeles': 'CA',
-      Chicago: 'IL',
-      Houston: 'TX',
-      Miami: 'FL',
-    };
+    const cityOptions = Object.keys(formOptions.cityStateMap);
 
-    const cityOptions = Object.keys(cityStateMap);
-    const zipOptions = ['10001', '90001', '60601', '77001', '33101'];
-
-    setFirstName(getRandomValue(firstNameOptions));
-    setLastName(getRandomValue(lastNameOptions));
-    setEmail(getRandomValue(emailOptions));
-    setPhone(getRandomValue(phoneOptions));
-    setAddress1(getRandomValue(address1Options));
-
+    setFirstName(getRandomFormValue(formOptions.firstName));
+    setLastName(getRandomFormValue(formOptions.lastName));
+    setEmail(getRandomFormValue(formOptions.email));
+    setPhone(getRandomFormValue(formOptions.phone));
+    setAddress1(getRandomFormValue(formOptions.address1));
     setAddress2('');
-    const randomCity = getRandomValue(cityOptions);
+
+    const randomCity = getRandomFormValue(cityOptions);
     setCity(randomCity);
-    setState(cityStateMap[randomCity]);
-    setZip(getRandomValue(zipOptions));
+    setState(formOptions.cityStateMap[randomCity]);
+    setZip(getRandomFormValue(formOptions.zip));
   };
 
   const stateSummary = {
