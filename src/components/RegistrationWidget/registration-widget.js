@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { createRoot } from 'react-dom/client';
 import {
   AsurionDoodleSpinner,
@@ -8,45 +7,15 @@ import {
   TextField,
 } from '@soluto-private/mx-asurion-ui-react';
 import { Modal } from '@soluto-private/aui-react-modal';
-
-const StyledFormField = styled.div`
-  margin-bottom: 1rem;
-`;
-
-const StyledEmphasis = styled.p`
-  font-style: italic;
-  color: orangered;
-  outline: 1px dotted orangered;
-  padding: 0.25rem;
-  text-align: left !important;
-  opacity: 0.6;
-`;
-
-const StyledH2 = styled.h2`
-  margin-top: 0;
-`;
-
-const StyledSpinnerContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const StyledPageContainer = styled.div`
-  width: 100%;
-  height: 100vh;
-`;
-
-const StyledSuccess = styled.div`
-  & svg {
-    max-width: 200px;
-  }
-  & > p {
-    text-align: center;
-  }
-`;
+import {
+  StyledEmphasis,
+  StyledH2,
+  StyledFormField,
+  StyledSpinnerContainer,
+  StyledSuccess,
+  StyledPageContainer,
+} from './elements';
+import { mockService } from './utils/mockService';
 
 const Alert = () => (
   <StyledEmphasis>
@@ -54,16 +23,6 @@ const Alert = () => (
     component, inserted as <code>&lt;registrion-widget&gt;</code>
   </StyledEmphasis>
 );
-
-function mockService(callback, minDelay = 1000, maxDelay = 3000) {
-  const delay =
-    Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
-
-  setTimeout(() => {
-    const result = 'Mock service response';
-    callback(result);
-  }, delay);
-}
 
 const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
   const [firstName, setFirstName] = useState('');
