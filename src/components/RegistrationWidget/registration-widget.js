@@ -89,7 +89,9 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
 
   useEffect(() => {
     function handleShowModalClick(ev) {
-      setIsModalOpen(true);
+      window.setTimeout(() => {
+        setIsModalOpen(ev.detail.show);
+      }, 1000);
     }
 
     window.addEventListener('show-modal', handleShowModalClick);
