@@ -10,6 +10,7 @@ import {
   StyledEmphasis,
   StyledH2,
   StyledPageContainer,
+  StyledScrollingDiv,
   StyledSpinnerContainer,
   StyledSuccess,
 } from './elements';
@@ -19,14 +20,7 @@ import {
   renderFormField,
   useFormState,
 } from './utils';
-import { formOptions, summary } from './fakeData';
-
-const Alert = () => (
-  <StyledEmphasis>
-    Keep in mind that this is <strong>our</strong> embedded app. It's a web
-    component, inserted as <code>&lt;registrion-widget&gt;</code>
-  </StyledEmphasis>
-);
+import { formOptions, summary, TsAndCs } from './fakeData';
 
 const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
   const { formState } = useFormState();
@@ -102,10 +96,10 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
 
   const handleAddToCart = () => {
     const addToCartEvent = new CustomEvent('addToCart', {
-      detail: { payload: summary },
+      detail: { payload: { ...stateSummary, ...summary } },
     });
     window.dispatchEvent(addToCartEvent);
-    setPageState('4');
+    setPageState('5');
     mode === 'modal' &&
       setTimeout(() => {
         setIsModalOpen(false);
@@ -134,9 +128,7 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
     defaultValue: <p>State not found</p>,
     0: (
       <>
-        <Alert />
-        <p>Marketing material</p>
-
+        <h2>Marketing material</h2>
         <p>
           <Button
             size="small"
@@ -151,7 +143,6 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
     ),
     1: (
       <>
-        <Alert />
         <StyledH2>Our product</StyledH2>
         <p>
           <Button size="small" onClick={fillForm}>
@@ -178,7 +169,6 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
     ),
     2: (
       <>
-        <Alert />
         <StyledH2>Our product</StyledH2>
         <StyledSpinnerContainer>
           <AsurionDoodleSpinner />
@@ -187,8 +177,21 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
       </>
     ),
     3: (
+      <>
+        <StyledScrollingDiv>
+          <TsAndCs />
+        </StyledScrollingDiv>
+        <Button
+          size="small"
+          onClick={() => {
+            setPageState('4');
+          }}>
+          Accept
+        </Button>
+      </>
+    ),
+    4: (
       <StyledSuccess>
-        <Alert />
         <StyledH2>Congratulations!</StyledH2>
 
         <p>Congratulations, {formState.firstName}, you're eligible!</p>
@@ -197,9 +200,8 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
         </Button>
       </StyledSuccess>
     ),
-    4: (
+    5: (
       <StyledSuccess>
-        <Alert />
         <StyledH2>Coverage added to cart</StyledH2>
       </StyledSuccess>
     ),
@@ -218,7 +220,7 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
     <Modal isOpen={isModalOpen} onCloseModal={() => setIsModalOpen(false)}>
       <Modal.Header>
         <Modal.Title>Our Service</Modal.Title>
-        <Modal.Subtitle>Subtitle goes here</Modal.Subtitle>
+        <Modal.Subtitle>This is our widget</Modal.Subtitle>
       </Modal.Header>
       <Modal.Content>{children}</Modal.Content>
     </Modal>
