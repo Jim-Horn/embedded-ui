@@ -15,6 +15,7 @@ import {
   StyledSuccess,
 } from './elements';
 import {
+  createMap,
   getRandomFormValue,
   mockService,
   renderFormField,
@@ -206,13 +207,6 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
       </StyledSuccess>
     ),
   };
-
-  function createMap({ defaultValue = '', ...data } = {}) {
-    const map = new Map(Object.entries(data));
-    return function (key = '') {
-      return map.get(key) ?? defaultValue;
-    };
-  }
 
   const getContent = createMap(content);
 
