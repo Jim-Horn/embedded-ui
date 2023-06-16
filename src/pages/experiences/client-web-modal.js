@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Layout from '../../components/layout';
 import Seo from '../../components/seo';
 import { styled } from 'styled-components';
@@ -16,6 +16,7 @@ const StyledDiscriptionList = styled.dl`
 `;
 
 const StyledEmphasis = styled.p`
+  margin-top: 1rem;
   font-style: italic;
   color: orangered;
   outline: 1px dotted orangered;
@@ -25,15 +26,14 @@ const StyledEmphasis = styled.p`
 `;
 
 const ClientPage = () => {
-  const cartContainerRef = useRef(null);
   const cart = useRef(null);
   const cartTotal = useRef(null);
   const checkElegibility = useRef(null);
+  const [summary, setSummary] = useState(null);
 
   useEffect(() => {
     const handleAddToCart = event => {
-      const jsonResponse = JSON.stringify(event.detail.payload, null, 2);
-      cartContainerRef.current.textContent = jsonResponse;
+      setSummary(event.detail.payload);
       const cartElementTerm = document.createElement('dt');
       const cartElementDefinition = document.createElement('dd');
       cartElementTerm.textContent = 'Asurion Protection Plan';
@@ -84,10 +84,13 @@ const ClientPage = () => {
       <h2 ref={cartTotal}>Total: $499.99</h2>
 
       <button type="button">Proceed to Checkout</button>
-      <StyledEmphasis>
-        <strong>Our response (tbd):</strong>
-        <pre ref={cartContainerRef}></pre>
-      </StyledEmphasis>
+
+      {summary && (
+        <StyledEmphasis>
+          <strong>Our response (tbd):</strong>
+          <pre>{JSON.stringify(summary, null, 2)}</pre>
+        </StyledEmphasis>
+      )}
 
       <registration-widget mode="modal"></registration-widget>
     </Layout>
