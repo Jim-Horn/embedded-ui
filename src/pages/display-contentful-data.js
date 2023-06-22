@@ -11,7 +11,7 @@ const StyledPre = styled.pre`
 const ContentfulData = ({ data }) => (
   <Layout>
     <StyledLink to="/display-rendered-data">Rendered data</StyledLink>
-    <p>Contentful data:</p>
+    <p>Contentful data: Hello World</p>
     <h1>{data.allContentfulPost.edges[0].node.name}</h1>
     <StyledPre>{JSON.stringify(data, null, 2)}</StyledPre>
   </Layout>
