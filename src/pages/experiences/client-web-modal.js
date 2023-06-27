@@ -83,7 +83,15 @@ const ClientPage = () => {
 
       <h2 ref={cartTotal}>Total: $499.99</h2>
 
-      <button type="button">Proceed to Checkout</button>
+      <button
+        type="button"
+        onClick={() =>
+          alert(
+            `This doesn't do anything - other than annoy those who dare click`
+          )
+        }>
+        Proceed to Checkout
+      </button>
 
       {summary && (
         <StyledEmphasis>
