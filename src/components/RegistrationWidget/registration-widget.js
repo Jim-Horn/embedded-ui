@@ -6,6 +6,7 @@ import {
 } from '@soluto-private/mx-asurion-ui-react';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import Barcode from 'react-barcode';
 import {
   StyledH2,
   StyledPageContainer,
@@ -22,7 +23,8 @@ import {
 } from './utils';
 import { formOptions, summary, TsAndCs } from './fakeData';
 
-const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
+
+const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode }) => {
   const { formState } = useFormState();
   const [pageState, setPageState] = useState('0');
   const [isModalOpen, setIsModalOpen] = useState(showModal);
@@ -184,7 +186,12 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
         <Button
           size="small"
           onClick={() => {
-            setPageState('4');
+            if(showBarCode){
+              setPageState('4');
+            }
+            else{
+              setPageState('6');
+            }
           }}>
           Accept
         </Button>
@@ -203,6 +210,12 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false }) => {
     5: (
       <StyledSuccess>
         <StyledH2>Coverage added to cart</StyledH2>
+      </StyledSuccess>
+    ),
+    6: (
+      <StyledSuccess>
+        <StyledH2>Scan Barcode</StyledH2>
+        <Barcode value="barcode-example" />
       </StyledSuccess>
     ),
   };
@@ -228,6 +241,7 @@ class RegistrationWidgetElement extends HTMLElement {
   connectedCallback() {
     this._mode = this.getAttribute('mode') || 'inline';
     this._showModal = false;
+    this._showBarCode = false;
     this.render();
   }
 
@@ -241,8 +255,9 @@ class RegistrationWidgetElement extends HTMLElement {
   render() {
     const mode = this._mode;
     const showModal = this._showModal;
+    const showBarCode = this._showBarCode;
     createRoot(this).render(
-      <RegistrationWidget mode={mode} showModal={showModal} />
+      <RegistrationWidget mode={mode} showModal={showModal} showBarCode={showBarCode} />
     );
   }
 }
