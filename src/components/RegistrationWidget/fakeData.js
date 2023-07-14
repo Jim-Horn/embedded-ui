@@ -1,5 +1,9 @@
 import React from 'react';
 
+import {
+  StyledUL,
+} from './elements-v2';
+
 export const formOptions = {
   firstName: ['John', 'David', 'Michael', 'Sarah', 'Emily'],
   lastName: ['Doe', 'Smith', 'Johnson', 'Brown', 'Lee'],
@@ -28,9 +32,9 @@ export const formOptions = {
   cityStateMap: {
     'New York': 'NY',
     'Los Angeles': 'CA',
-    Chicago: 'IL',
-    Houston: 'TX',
-    Miami: 'FL',
+    'Chicago': 'IL',
+    'Houston': 'TX',
+    'Miami': 'FL',
   },
 };
 
@@ -44,86 +48,18 @@ export const summary = {
 
 export const TsAndCs = () => (
   <>
-    <h1>Terms and Conditions</h1>
-
-    <h2>1. Lorem Ipsum</h2>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc auctor, urna
-      sit amet aliquam consequat, sapien metus ultricies nisi, a tristique metus
-      tortor a neque. Vestibulum pulvinar lorem non eleifend varius. Aliquam
-      eleifend magna vel lobortis ultricies. Donec sed justo eget dolor
-      dignissim ultricies. Sed vitae quam ac arcu malesuada venenatis. Maecenas
-      ut consectetur justo. Fusce ac finibus velit. Fusce scelerisque, velit ut
-      fringilla vulputate, arcu sapien laoreet ipsum, at tempus nunc ante vitae
-      risus. Fusce elementum ipsum felis, sed facilisis justo sagittis sed.
-    </p>
-
-    <h2>2. Nullam Mollis</h2>
-    <p>
-      Nullam mollis elit vitae velit rutrum bibendum. Suspendisse vitae enim
-      sapien. Mauris eget sem fermentum, scelerisque sem a, rutrum quam.
-      Curabitur hendrerit tristique malesuada. Duis lacinia urna vitae enim
-      ullamcorper, in lacinia ipsum facilisis. Aenean vel est feugiat, euismod
-      dolor eget, volutpat massa. Vestibulum efficitur justo et felis rutrum
-      aliquet. Praesent condimentum semper erat, sit amet tristique erat
-      consequat at. Nulla sed pretium mi. Pellentesque consequat eleifend
-      mauris, eget tempus lectus efficitur in. In sit amet velit libero.
-      Suspendisse rhoncus lobortis tortor, in elementum ligula ultricies at.
-      Suspendisse potenti.
-    </p>
-
-    <h2>3. Praesent Posuere</h2>
-    <p>
-      Praesent posuere magna et purus ullamcorper, sit amet gravida nisl
-      consequat. Donec iaculis, lacus at eleifend bibendum, odio metus semper
-      libero, in euismod dui ligula in enim. Nulla facilisi. Quisque tempor
-      lacinia diam id euismod. Vestibulum ante ipsum primis in faucibus orci
-      luctus et ultrices posuere cubilia Curae; Cras consectetur felis ac orci
-      eleifend, non congue lectus varius. Sed et nibh vitae purus malesuada
-      scelerisque.
-    </p>
-
-    <h2>4. Ut Ipsum</h2>
-    <p>
-      Ut ipsum justo, tristique in erat id, egestas venenatis enim. Vivamus
-      interdum ligula purus, sit amet ultrices metus iaculis sit amet. Donec
-      elementum venenatis tellus id egestas. Duis tempus feugiat sapien id
-      consectetur. Nunc pulvinar faucibus mauris, in rutrum risus faucibus sed.
-      Cras tempor efficitur fringilla. Suspendisse condimentum congue magna, sit
-      amet dapibus lacus ullamcorper nec. Sed luctus tellus sapien, ut tempus
-      nisl ullamcorper sed. Fusce vitae vestibulum nisi, ut volutpat quam.
-    </p>
-
-    <h2>5. In Quam</h2>
-    <p>
-      In quam ante, eleifend ac mauris vitae, eleifend elementum lectus. Nullam
-      at consectetur nunc. Sed fermentum, massa a dapibus congue, orci nunc
-      malesuada mauris, eu consequat nunc lectus eget nulla. Nullam ultrices
-      pulvinar nunc in varius. Morbi blandit augue sed nisi finibus tristique.
-      Aenean hendrerit eleifend purus in luctus. Curabitur tristique posuere
-      tellus non dictum. Sed gravida purus id tincidunt vulputate. Fusce ut
-      lobortis tortor.
-    </p>
-
-    <h2>6. Suspendisse Potenti</h2>
-    <p>
-      Suspendisse potenti. Morbi bibendum magna vitae nulla rutrum facilisis.
-      Sed eu metus vitae orci congue ultricies. Sed et sapien ac quam bibendum
-      aliquam nec sit amet odio. Vestibulum ante ipsum primis in faucibus orci
-      luctus et ultrices posuere cubilia Curae; Sed luctus quam nec lectus
-      cursus, ac varius odio volutpat. Ut non ex tortor. Phasellus at dictum
-      nisi. In pretium malesuada turpis at convallis.
-    </p>
-
-    <h2>7. Conclusion</h2>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam
-      rutrum, vestibulum elit eu, varius neque. Sed consequat varius aliquam.
-      Quisque eu nunc eu lectus efficitur rhoncus. Nulla a malesuada mi, eu
-      pretium ex. Morbi vitae lectus ut sem aliquam sagittis. Vestibulum
-      ullamcorper consectetur massa, ut finibus felis posuere id. In blandit
-      bibendum congue.
-    </p>
+    <h1>Home+ Legal Disclosures</h1>
+    <StyledUL>
+      <li>Asurion Home+ is $24.99 plus taxes per month.</li>
+      <li>The plan will continue to renew each month unless canceled and will be billed to your payment card.</li>
+      <li>You may cancel at any time for no additional charge. If canceled, a pro-rated refund of the service contract coverage may be provided as described in the terms and conditions.</li>
+      <li>The plan begins on day 1 with access to technical support and device protection coverage begins on day 31 of enrollment. Any pre-existing conditions or breakdowns that occur before day 31 are not covered.</li> 
+      <li>Device coverage includes mechanical and electrical breakdown on eligible devices and Accidental Damage from Handling for certain portable devices.</li>
+      <li>The plan provides up to $5,000 in coverage every 12 months and $2,000 per approved claim.</li>
+      <li>Non-original parts may be used for repair, and a replacement product may be a new, refurbished, or remanufactured product.</li>
+      <li>A service fee of $0, $49 or $99 plus tax will be charged for each approved claim. </li>
+      <li>Limitations and exclusions apply. Please see the Terms and Conditions for complete program details, including a binding individual arbitration provision applicable to this plan (unless state exceptions apply.)”</li>
+    </StyledUL>
 
     <footer>
       <p>
