@@ -58,26 +58,29 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
     };
   }, []);
 
-  useEffect(() => {
-    const receiveMessage = event => {
-      // Ensure messages are received from same-origin
-      if (event.origin !== window.location.origin) return;
-      setMessages(prevMessages => [
-        ...prevMessages,
-        `Received from iframe: ${event.data}`,
-      ]);
-    };
+  // useEffect(() => {
+  //   const receiveMessage = event => {
+  //     // Ensure messages are received from same-origin
+  //     if (event.origin !== window.location.origin) return;
+  //     setMessages(prevMessages => [
+  //       ...prevMessages,
+  //       `Received from iframe: ${event.data}`,
+  //     ]);
+  //   };
 
-    window.addEventListener("message", receiveMessage);
+  //   window.addEventListener("message", receiveMessage);
 
-    return () => {
-      window.removeEventListener("message", receiveMessage);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("message", receiveMessage);
+  //   };
+  // }, []);
 
   const sendMessage = () => {
-    const iframe = iframeRef.current;
+    setTimeout(()=>{
+      const iframe = iframeRef.current;
+    },0)
     const iframeWindow = iframe.contentWindow;
+    console.log(iframeWindow);
     const message = `from parent @${new Date().getTime()}`;
     setMessages(prevMessages => [...prevMessages, `Sent: ${message}`]);
     iframeWindow.postMessage(message, window.location.origin); // specify target origin
@@ -159,7 +162,7 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
     ccLNametextInput(value);
   };
 
-  console.log(pageState)
+  // console.log(pageState)
 
 
   const formFields = [
@@ -201,8 +204,9 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
       </>
     ),
     2: (
+        // <iframe id="myIframe" title="Data" src="/iframe/test" style={{"border":"none"}}>
+        // </iframe>
         <iframe id="myIframe" ref={iframeRef} title="Data" src="/iframe/test" style={{"border":"none"}}>
-           <pre style={{ margin: "1rem" }}>{messages.join("\n")}</pre>
         </iframe>
     ),
     3: (
@@ -291,7 +295,7 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
                 let nextPage = (parseInt(pageState)+1);
                 nextPage = nextPage.toString();
                 setPageState(nextPage);
-                if(pageState === '2'){
+                if(pageState === '1'){
                   sendMessage();
                 }
               }
