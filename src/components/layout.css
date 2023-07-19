@@ -299,14 +299,30 @@ button[aria-label="Dismiss modal"] {
   margin:0;
 }
 .ccContainer{
-  margin:15px 0;
+  margin:15px 0 30px;
   display:grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
 }
 .ccContainer input{
   grid-column: span 2;
 }
 .tcCheckbox{
-  margin-top:15px;
+  margin-top:24px;
+  display:flex;
+  align-items: center;
+}
+iframe{
+  width:100%;
+  height:100%;
+  margin:0;
+}
+
+/* Media Queries */
+
+
+@media (min-width: 768px){
+  .asurionModalBody {
+      margin: 0 0 1.5rem !important;
+  }
 }

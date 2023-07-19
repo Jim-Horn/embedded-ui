@@ -60,7 +60,7 @@ export const StyledPara = styled.p`
 export const StyledH1 = styled.h1`
   font-size: 24px;
   line-height: 31.2px;
-  font-weight: 100;
+  font-weight: 400;
   margin-bottom: .625rem;
 `;
 

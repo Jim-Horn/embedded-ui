@@ -48,7 +48,7 @@ export const summary = {
 
 export const TsAndCs = () => (
   <>
-    <h1>Home+ Legal Disclosures</h1>
+    <h1 style={{"margin-bottom":".25rem"}}>Home+ Legal Disclosures</h1>
     <StyledUL>
       <li>Asurion Home+ is $24.99 plus taxes per month.</li>
       <li>The plan will continue to renew each month unless canceled and will be billed to your payment card.</li>

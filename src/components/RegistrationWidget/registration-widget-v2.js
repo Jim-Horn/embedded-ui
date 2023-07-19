@@ -8,7 +8,7 @@ import {
   TextField,
   Checkbox,
 } from '@soluto-private/mx-asurion-ui-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Barcode from 'react-barcode';
 import {
@@ -38,7 +38,9 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
   const [creditCardNumber, setCreditCardNumber] = useState('');
   const [ccFNametextInput, setccFNameTextInput] = useState('');
   const [ccLNametextInput, setccLNameTextInput] = useState('');
-  const [checked, setChecked] = useState(false);
+  const [billingAddressIsChecked, setBillingAddressIsChecked] = useState(false);
+  const iframeRef = useRef(null);
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     function handleShowModalClick(ev) {
@@ -56,6 +58,31 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
     };
   }, []);
 
+  useEffect(() => {
+    const receiveMessage = event => {
+      // Ensure messages are received from same-origin
+      if (event.origin !== window.location.origin) return;
+      setMessages(prevMessages => [
+        ...prevMessages,
+        `Received from iframe: ${event.data}`,
+      ]);
+    };
+
+    window.addEventListener("message", receiveMessage);
+
+    return () => {
+      window.removeEventListener("message", receiveMessage);
+    };
+  }, []);
+
+  const sendMessage = () => {
+    const iframe = iframeRef.current;
+    const iframeWindow = iframe.contentWindow;
+    const message = `from parent @${new Date().getTime()}`;
+    setMessages(prevMessages => [...prevMessages, `Sent: ${message}`]);
+    iframeWindow.postMessage(message, window.location.origin); // specify target origin
+  };
+  
   const resetForm = () => {
     formState.setFirstName('');
     formState.setLastName('');
@@ -132,6 +159,9 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
     ccLNametextInput(value);
   };
 
+  console.log(pageState)
+
+
   const formFields = [
     ['first-name', 'First Name', formState.firstName, formState.setFirstName, true, 2],
     ['last-name', 'Last Name', formState.lastName, formState.setLastName, true, 2],
@@ -155,7 +185,7 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
     ),
     1: (
       <>
-        <StyledPara>Customer Information</StyledPara>
+        <StyledH1>Customer Information</StyledH1>
         <p>
           <Button size="small" onClick={fillForm}>
             Fill form
@@ -171,37 +201,9 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
       </>
     ),
     2: (
-      <>
-        {/* <iframe src="http://localhost:8000/iframe/test"></iframe> */}
-        <h2>Payment Information</h2>
-        <CreditCardField
-          label="Credit Card Number"
-          value={creditCardNumber}
-          onChange={handleFNameChange}
-          fieldStatus="default"
-        />
-        <div className="ccContainer">
-          <TextField
-            onChange={handleLNameChange}
-            label="First Name"
-            value={ccFNametextInput}
-            containerClassName="spanCol1"
-          />
-          <TextField
-            onChange={handleChange}
-            label="Last Name"
-            value={ccLNametextInput}
-            containerClassName="spanCol1"
-          />
-        </div>
-        <p className="tcCheckbox">
-        <Checkbox
-          label="Billing address is the same as home address"
-          checked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
-        />
-        </p>
-      </>
+        <iframe id="myIframe" ref={iframeRef} title="Data" src="/iframe/test" style={{"border":"none"}}>
+           <pre style={{ margin: "1rem" }}>{messages.join("\n")}</pre>
+        </iframe>
     ),
     3: (
       <>
@@ -274,10 +276,12 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
             type="submit"
             color="secondary"
             variant="outline"
+            style = {(pageState === '0') ? {display:'none'} : {display:'block'}}
             onClick={() => {
               let prevPage = (parseInt(pageState)-1);
                 prevPage = prevPage.toString();
                 setPageState(prevPage);
+                
             }}>
             Back
           </Button>
@@ -287,6 +291,9 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
                 let nextPage = (parseInt(pageState)+1);
                 nextPage = nextPage.toString();
                 setPageState(nextPage);
+                if(pageState === '2'){
+                  sendMessage();
+                }
               }
             }
             color="secondary">
