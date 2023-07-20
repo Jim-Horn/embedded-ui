@@ -1,14 +1,11 @@
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { Modal } from '@soluto-private/aui-react-modal';
 import {
   AsurionDoodleSpinner,
   Button,
   ButtonGroup,
   ProgressStepper,
-  CreditCardField,
-  TextField,
-  Checkbox,
 } from '@soluto-private/mx-asurion-ui-react';
-import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Barcode from 'react-barcode';
 import {
@@ -18,7 +15,6 @@ import {
   StyledSpinnerContainer,
   StyledSuccess,
   StyledForm,
-  StyledPara,
   StyledH1,
 } from './elements-v2';
 import {
@@ -30,17 +26,33 @@ import {
 } from './utils';
 import { formOptions, summary, TsAndCs } from './fakeData';
 
+const IframeComponent = forwardRef(({ src, setLoadedState }, ref) => {
+  const handleOnLoad = () => {
+    setLoadedState(true);
+  };
 
-const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode }) => {
+  return (
+    <iframe
+      src={src}
+      onLoad={handleOnLoad}
+      title="Iframe Component"
+      ref={ref}
+      style={{ width: '100%', height: '100%' }}
+    />
+  );
+});
+
+const RegistrationWidget = ({
+  mode = 'inline',
+  showModal = false,
+  showBarCode,
+}) => {
   const { formState } = useFormState();
   const [pageState, setPageState] = useState('0');
   const [isModalOpen, setIsModalOpen] = useState(showModal);
-  const [creditCardNumber, setCreditCardNumber] = useState('');
-  const [ccFNametextInput, setccFNameTextInput] = useState('');
-  const [ccLNametextInput, setccLNameTextInput] = useState('');
+  const [iframeLoaded, setIframeLoaded] = useState(false);
   const [billingAddressIsChecked, setBillingAddressIsChecked] = useState(false);
   const iframeRef = useRef(null);
-  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     function handleShowModalClick(ev) {
@@ -58,34 +70,24 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
     };
   }, []);
 
-  // useEffect(() => {
-  //   const receiveMessage = event => {
-  //     // Ensure messages are received from same-origin
-  //     if (event.origin !== window.location.origin) return;
-  //     setMessages(prevMessages => [
-  //       ...prevMessages,
-  //       `Received from iframe: ${event.data}`,
-  //     ]);
-  //   };
-
-  //   window.addEventListener("message", receiveMessage);
-
-  //   return () => {
-  //     window.removeEventListener("message", receiveMessage);
-  //   };
-  // }, []);
-
   const sendMessage = () => {
-    setTimeout(()=>{
+    setTimeout(() => {
+      console.log('in the timeout');
+      console.log(`iframeLoaded: ${iframeLoaded}`);
+      console.log(`formState: ${JSON.stringify(formState, null, 2)}`);
       const iframe = iframeRef.current;
-    },0)
-    const iframeWindow = iframe.contentWindow;
-    console.log(iframeWindow);
-    const message = `from parent @${new Date().getTime()}`;
-    setMessages(prevMessages => [...prevMessages, `Sent: ${message}`]);
-    iframeWindow.postMessage(message, window.location.origin); // specify target origin
+      console.log(`iframe: ${iframe}`);
+
+      const iframeWindow = iframe.contentWindow;
+      console.log(`iframeWindow: ${iframeWindow}`);
+
+      iframeWindow.postMessage(
+        JSON.stringify(formState),
+        window.location.origin
+      );
+    }, 500); // doesn't work without ~500ms delay
   };
-  
+
   const resetForm = () => {
     formState.setFirstName('');
     formState.setLastName('');
@@ -149,29 +151,41 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
       }, 1500);
   };
 
-  const handleChange = (event) => {
-    const { value } = event.target;
-    setCreditCardNumber(value);
-  };
-  const handleFNameChange = (event) => {
-    const { value } = event.target;
-    ccFNametextInput(value);
-  };
-  const handleLNameChange = (event) => {
-    const { value } = event.target;
-    ccLNametextInput(value);
-  };
-
-  // console.log(pageState)
-
-
   const formFields = [
-    ['first-name', 'First Name', formState.firstName, formState.setFirstName, true, 2],
-    ['last-name', 'Last Name', formState.lastName, formState.setLastName, true, 2],
+    [
+      'first-name',
+      'First Name',
+      formState.firstName,
+      formState.setFirstName,
+      true,
+      2,
+    ],
+    [
+      'last-name',
+      'Last Name',
+      formState.lastName,
+      formState.setLastName,
+      true,
+      2,
+    ],
     ['email', 'Email', formState.email, formState.setEmail, true, 4],
     ['phone', 'Phone Number', formState.phone, formState.setPhone, true, 4],
-    ['address1', 'Address 1', formState.address1, formState.setAddress1, true, 3],
-    ['address2', 'Apt., Suite, Attn.', formState.address2, formState.setAddress2, false, 1],
+    [
+      'address1',
+      'Address 1',
+      formState.address1,
+      formState.setAddress1,
+      true,
+      3,
+    ],
+    [
+      'address2',
+      'Apt., Suite, Attn.',
+      formState.address2,
+      formState.setAddress2,
+      false,
+      1,
+    ],
     ['city', 'City', formState.city, formState.setCity, true, 4],
     ['state', 'State', formState.state, formState.setState, true, 2],
     ['zip', 'Zip', formState.zip, formState.setZip, true, 2],
@@ -195,19 +209,18 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
           </Button>
         </p>
         <StyledForm onSubmit={doVerification}>
-          {formFields.map((field) => {
-            return(
-              renderFormField(...field)
-            );
+          {formFields.map(field => {
+            return renderFormField(...field);
           })}
         </StyledForm>
       </>
     ),
     2: (
-        // <iframe id="myIframe" title="Data" src="/iframe/test" style={{"border":"none"}}>
-        // </iframe>
-        <iframe id="myIframe" ref={iframeRef} title="Data" src="/iframe/test" style={{"border":"none"}}>
-        </iframe>
+      <IframeComponent
+        ref={iframeRef}
+        src="/iframe/test"
+        setLoadedState={setIframeLoaded}
+      />
     ),
     3: (
       <>
@@ -244,30 +257,34 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
   const getContent = createMap(content);
 
   const PartialModal = ({ children }) => (
-    <Modal className="asurionModal" isSticky isOpen={isModalOpen} onCloseModal={() => {
-      setIsModalOpen(false);
-      setPageState('0');
-      resetForm();
+    <Modal
+      className="asurionModal"
+      isSticky
+      isOpen={isModalOpen}
+      onCloseModal={() => {
+        setIsModalOpen(false);
+        setPageState('0');
+        resetForm();
       }}>
       <Modal.Header className="asurionModalHeader">
-        <div style={{"display":"block"}}>
-        <ProgressStepper
+        <div style={{ display: 'block' }}>
+          <ProgressStepper
             className="test"
             orientation="horizontal"
             size="small"
             steps={[
               {
-                state: 'incomplete'
+                state: 'incomplete',
               },
               {
-                state: 'incomplete'
+                state: 'incomplete',
               },
               {
-                state: 'incomplete'
+                state: 'incomplete',
               },
               {
-                state: 'incomplete'
-              }
+                state: 'incomplete',
+              },
             ]}
           />
         </div>
@@ -280,26 +297,23 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
             type="submit"
             color="secondary"
             variant="outline"
-            style = {(pageState === '0') ? {display:'none'} : {display:'block'}}
+            style={
+              pageState === '0' ? { display: 'none' } : { display: 'block' }
+            }
             onClick={() => {
-              let prevPage = (parseInt(pageState)-1);
-                prevPage = prevPage.toString();
-                setPageState(prevPage);
-                
+              let prevPage = parseInt(pageState) - 1;
+              prevPage = prevPage.toString();
+              setPageState(prevPage);
             }}>
             Back
           </Button>
-          <Button 
-            size="medium" 
-              onClick={() => {
-                let nextPage = (parseInt(pageState)+1);
-                nextPage = nextPage.toString();
-                setPageState(nextPage);
-                if(pageState === '1'){
-                  sendMessage();
-                }
-              }
-            }
+          <Button
+            size="medium"
+            onClick={() => {
+              let nextPage = parseInt(pageState) + 1;
+              nextPage = nextPage.toString();
+              setPageState(nextPage);
+            }}
             color="secondary">
             Next
           </Button>
@@ -309,6 +323,8 @@ const RegistrationWidget = ({ mode = 'inline', showModal = false, showBarCode })
   );
 
   const Container = mode === 'modal' ? PartialModal : StyledPageContainer;
+
+  iframeLoaded && sendMessage();
 
   return <Container>{getContent(pageState)}</Container>;
 };
@@ -333,7 +349,11 @@ class RegistrationWidgetElement extends HTMLElement {
     const showModal = this._showModal;
     const showBarCode = this._showBarCode;
     createRoot(this).render(
-      <RegistrationWidget mode={mode} showModal={showModal} showBarCode={showBarCode} />
+      <RegistrationWidget
+        mode={mode}
+        showModal={showModal}
+        showBarCode={showBarCode}
+      />
     );
   }
 }
