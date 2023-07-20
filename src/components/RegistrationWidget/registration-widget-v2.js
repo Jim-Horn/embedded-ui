@@ -1,3 +1,4 @@
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { Modal } from '@soluto-private/aui-react-modal';
 import {
   AsurionDoodleSpinner,
@@ -5,7 +6,6 @@ import {
   ButtonGroup,
   ProgressStepper,
 } from '@soluto-private/mx-asurion-ui-react';
-import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Barcode from 'react-barcode';
 import {
@@ -26,6 +26,22 @@ import {
 } from './utils';
 import { formOptions, summary, TsAndCs } from './fakeData';
 
+const IframeComponent = forwardRef(({ src, setLoadedState }, ref) => {
+  const handleOnLoad = () => {
+    setLoadedState(true);
+  };
+
+  return (
+    <iframe
+      src={src}
+      onLoad={handleOnLoad}
+      title="Iframe Component"
+      ref={ref}
+      style={{ width: '100%', height: '100%' }}
+    />
+  );
+});
+
 const RegistrationWidget = ({
   mode = 'inline',
   showModal = false,
@@ -34,6 +50,7 @@ const RegistrationWidget = ({
   const { formState } = useFormState();
   const [pageState, setPageState] = useState('0');
   const [isModalOpen, setIsModalOpen] = useState(showModal);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
   const [billingAddressIsChecked, setBillingAddressIsChecked] = useState(false);
   const iframeRef = useRef(null);
 
@@ -54,10 +71,21 @@ const RegistrationWidget = ({
   }, []);
 
   const sendMessage = () => {
-    const iframe = iframeRef.current;
+    setTimeout(() => {
+      console.log('in the timeout');
+      console.log(`iframeLoaded: ${iframeLoaded}`);
+      console.log(`formState: ${JSON.stringify(formState, null, 2)}`);
+      const iframe = iframeRef.current;
+      console.log(`iframe: ${iframe}`);
 
-    const iframeWindow = iframe.contentWindow;
-    iframeWindow.postMessage(JSON.stringify(formState), window.location.origin); // specify target origin
+      const iframeWindow = iframe.contentWindow;
+      console.log(`iframeWindow: ${iframeWindow}`);
+
+      iframeWindow.postMessage(
+        JSON.stringify(formState),
+        window.location.origin
+      );
+    }, 500); // doesn't work without ~500ms delay
   };
 
   const resetForm = () => {
@@ -185,17 +213,15 @@ const RegistrationWidget = ({
             return renderFormField(...field);
           })}
         </StyledForm>
-        <button onClick={sendMessage}>Send Message</button>
-
-        <iframe
-          id="myIframe"
-          ref={iframeRef}
-          title="Data"
-          src="/iframe/test"
-          style={{ border: '2px solid red' }}></iframe>
       </>
     ),
-    2: <>foo</>,
+    2: (
+      <IframeComponent
+        ref={iframeRef}
+        src="/iframe/test"
+        setLoadedState={setIframeLoaded}
+      />
+    ),
     3: (
       <>
         <StyledH2>Our product</StyledH2>
@@ -287,9 +313,6 @@ const RegistrationWidget = ({
               let nextPage = parseInt(pageState) + 1;
               nextPage = nextPage.toString();
               setPageState(nextPage);
-              if (pageState === '1') {
-                sendMessage();
-              }
             }}
             color="secondary">
             Next
@@ -300,6 +323,8 @@ const RegistrationWidget = ({
   );
 
   const Container = mode === 'modal' ? PartialModal : StyledPageContainer;
+
+  iframeLoaded && sendMessage();
 
   return <Container>{getContent(pageState)}</Container>;
 };

@@ -27,39 +27,44 @@ const CreditCardInfo = () => {
   };
   const handleFNameChange = event => {
     const { value } = event.target;
-    ccFNameTextInput(value);
+    setccFNameTextInput(value);
   };
+
   const handleLNameChange = event => {
     const { value } = event.target;
-    ccLNameTextInput(value);
+    setccLNameTextInput(value);
   };
 
   useEffect(() => {
+    console.log('useEffect');
     const receiveMessage = event => {
-      if (event.origin !== window.location.origin) {
-        return;
-      }
       console.log(`Received from parent: ${event.data}`);
-      const {
-        firstName,
-        lastName,
-        email,
-        phone,
-        address1,
-        address2,
-        city,
-        state,
-        zip,
-      } = JSON.parse(event.data);
-      setFNameTextInput(firstName);
-      setLNameTextInput(lastName);
-      setEmailTextInput(email);
-      setPhoneTextInput(phone);
-      setAddressTextInput(address1);
-      setAptTextInput(address2);
-      setCityTextInput(city);
-      setStateTextInput(state);
-      setZipTextInput(zip);
+
+      try {
+        const {
+          firstName,
+          lastName,
+          email,
+          phone,
+          address1,
+          address2,
+          city,
+          state,
+          zip,
+        } = JSON.parse(event.data);
+
+        setFNameTextInput(firstName);
+        setLNameTextInput(lastName);
+        setEmailTextInput(email);
+        setPhoneTextInput(phone);
+        setAddressTextInput(address1);
+        setAptTextInput(address2);
+        setCityTextInput(city);
+        setStateTextInput(state);
+        setZipTextInput(zip);
+      } catch (error) {
+        console.error('Error parsing message:', error);
+      }
     };
 
     window.addEventListener('message', receiveMessage);
