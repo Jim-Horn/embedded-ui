@@ -303,7 +303,8 @@ const RegistrationWidget = ({
             onClick={() => {
               let prevPage = parseInt(pageState) - 1;
               prevPage = prevPage.toString();
-              setPageState(prevPage);
+              setPageState(() => prevPage);
+              pageState !== '2' && setIframeLoaded(false);
             }}>
             Back
           </Button>
@@ -312,7 +313,8 @@ const RegistrationWidget = ({
             onClick={() => {
               let nextPage = parseInt(pageState) + 1;
               nextPage = nextPage.toString();
-              setPageState(nextPage);
+              setPageState(() => nextPage);
+              pageState !== '2' && setIframeLoaded(false);
             }}
             color="secondary">
             Next
@@ -324,7 +326,9 @@ const RegistrationWidget = ({
 
   const Container = mode === 'modal' ? PartialModal : StyledPageContainer;
 
-  iframeLoaded && sendMessage();
+  useEffect(() => {
+    iframeLoaded && sendMessage();
+  }, [iframeLoaded]);
 
   return <Container>{getContent(pageState)}</Container>;
 };
