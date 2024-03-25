@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Layout from '../../components/layout';
 import Seo from '../../components/seo';
+import { Button, Text } from '@soluto-private/mx-asurion-ui-react';
 import { styled } from 'styled-components';
 
 const StyledDiscriptionList = styled.dl`
@@ -14,7 +15,15 @@ const StyledDiscriptionList = styled.dl`
     text-align: right;
   }
 `;
-
+const StyledDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e1e1e1;
+  max-width: 405px;
+  // height:372px;
+  /* font-family: 'Apercu Pro'; */
+  padding: 1.25rem;
+`;
 const StyledEmphasis = styled.p`
   margin-top: 1rem;
   font-style: italic;
@@ -23,6 +32,28 @@ const StyledEmphasis = styled.p`
   padding: 0.25rem;
   text-align: left !important;
   opacity: 0.6;
+`;
+const StyledEmphasis2 = styled.span`
+  font-weight: 700;
+  font-size: 1.25rem;
+`;
+const StyledPara = styled.p`
+  font-size: 0.875rem;
+  line-height: 18.2px;
+  margin-bottom: 1.25rem;
+`;
+const StyledH1 = styled.h1`
+  font-size: 24px;
+  line-height: 31.2px;
+  font-weight: 100;
+  margin-bottom: 0.625rem;
+`;
+const StyledUL = styled.ul`
+  list-style-position: inside;
+`;
+const StyledLI = styled.li`
+  font-size: 0.875rem;
+  margin-left: 0.75rem;
 `;
 
 const ClientPage = () => {
@@ -58,13 +89,28 @@ const ClientPage = () => {
 
   return (
     <Layout>
-      <h1>Client page</h1>
+      <StyledDiv>
+        <StyledH1>
+          Don't forget to ask your customer about Asurion Home+
+        </StyledH1>
+        <StyledPara>
+          Asurion Home+® offers everything from screen repairs to video storage
+          and so much more. Here are some of the plan’s best features:
+        </StyledPara>
+        <StyledUL>
+          <StyledLI>Unlimited devices covered</StyledLI>
+          <StyledLI>Live support by trusted experts</StyledLI>
+          <StyledLI>In-home setup and installations</StyledLI>
+          <StyledLI>Data security and protection</StyledLI>
+          <StyledLI>Hassle-free claims</StyledLI>
+        </StyledUL>
 
-      <h1>Your Shopping Cart</h1>
-
-      <p ref={checkElegibility}>
-        You may be elegible for coverage.{' '}
-        <button
+        <StyledPara ref={checkElegibility}>
+          <StyledEmphasis2>Only $25</StyledEmphasis2> / month
+        </StyledPara>
+        <Button
+          className="enrollBtn"
+          color="secondary"
           onClick={ev => {
             dispatchEvent(
               new CustomEvent('show-modal', {
@@ -72,27 +118,9 @@ const ClientPage = () => {
               })
             );
           }}>
-          Check elegibility
-        </button>
-      </p>
-
-      <StyledDiscriptionList ref={cart}>
-        <dt>PlayStation 5</dt>
-        <dd>$499.99</dd>
-      </StyledDiscriptionList>
-
-      <h2 ref={cartTotal}>Total: $499.99</h2>
-
-      <button
-        type="button"
-        onClick={() =>
-          alert(
-            `This doesn't do anything - other than annoy those who dare click`
-          )
-        }>
-        Proceed to Checkout
-      </button>
-
+          Start Enrollment
+        </Button>
+      </StyledDiv>
       {summary && (
         <StyledEmphasis>
           <strong>Our response (tbd):</strong>
@@ -100,7 +128,7 @@ const ClientPage = () => {
         </StyledEmphasis>
       )}
 
-      <registration-widget mode="modal"></registration-widget>
+      <registration-widget-v2 mode="modal"></registration-widget-v2>
     </Layout>
   );
 };

@@ -7,3 +7,4 @@
 // You can delete this file if you're not using it
 import './src/components/counter-element.js';
 import './src/components/RegistrationWidget/registration-widget.js';
+import './src/components/RegistrationWidget/registration-widget-v2.js';
